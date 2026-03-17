@@ -7,34 +7,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<nav th:fragment="navbar" class="bg-white shadow-md px-6 py-4" xmlns:sec="http://www.w3.org/1999/xhtml">
+<nav th:fragment="navbar" class="bg-green-900 shadow-md px-6 py-2" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
 
-        <a href="/" class="text-xl font-bold text-green-600 tracking-tight">Fridge Raider</a>
+        <!-- Logo with name -->
+        <a href="/" class="flex items-center gap-3">
+            <img th:src="@{/images/fridge_raider_logo_only.png}" alt="Fridge Raider" class="h-12 w-12 rounded-full object-cover">
+            <span class="font-bold text-xl tracking-wide uppercase text-amber-400">Fridge Raider</span>
+        </a>
 
         <div class="flex items-center gap-6">
-            <a href="#" class="text-gray-600 hover:text-green-600 transition-colors text-sm font-medium">
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-house mr-1"></i> Home
             </a>
-            <a href="#" class="text-gray-600 hover:text-green-600 transition-colors text-sm font-medium">
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-bookmark mr-1"></i> Saved Recipes
             </a>
-            <a href="#" class="text-gray-600 hover:text-green-600 transition-colors text-sm font-medium">
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-rss mr-1"></i> Feed
             </a>
-            <a href="#" class="text-gray-600 hover:text-green-600 transition-colors text-sm font-medium">
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-gear mr-1"></i> Profile
             </a>
         </div>
 
         <div class="flex items-center gap-4">
-            <!--<span sec:authorize="isAuthenticated()">-->
-            <a href="#" class="text-gray-600 hover:text-red-500 transition-colors text-sm font-medium">
+            <a href="#" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
                 <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
             </a>
-            <!--</span>-->
-
-            <a href="#" class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            <a href="#" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
                 Login
             </a>
         </div>
