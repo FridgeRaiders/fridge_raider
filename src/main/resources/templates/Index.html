@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>Fridge Raider</title>
     <script src="https://kit.fontawesome.com/850f048d48.js" crossorigin="anonymous"></script>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link th:href="@{/main.css}" rel="stylesheet"/>
 </head>
-<body class="bg-slate">
 <div th:replace="fragments/navbar :: navbar"></div>
-<div class="bg-blue-500">
-<header class="bg-white container mx-auto">
+
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+<main class="flex-1 container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold p-8">Home Page</h1>
-</header>
-</div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+</main>
+
 </body>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </html>
