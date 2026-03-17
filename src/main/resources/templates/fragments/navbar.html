@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar-main" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="navbar-inner">
+
+        <a href="/" class="navbar-brand">Fridge Raider</a>
+
+        <div class="navbar-links">
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-user"></i> Saved Recipes
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-user"></i> Feed
+            </a>
+            <span>
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-gear"></i> Profile
+                </a>
+            </span>
+        </div>
+
+        <div class="navbar-actions">
+<!--            <span sec:authorize="isAuthenticated()">-->
+
+
+                <a href="#" class="nav-link nav-logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+
+<!--</span>-->
+
+            <span>
+                <a href="#" class="btn btn-primary btn-sm px-3">Login</a>
+            </span>
+        </div>
+
+    </div>
+</nav>
+
+</body>
+</html>
