@@ -3,6 +3,7 @@ package com.example.foodproject.config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,10 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Value("${spring.security.oauth2.client.provider.okta.issuer-uri}")
+    @Value("${OKTA_ISSUER}")
     private String issuer;
 
-    @Value("${spring.security.oauth2.client.registration.okta.client-id}")
+    @Value("${OKTA_CLIENT_ID}")
     private String clientId;
 
     @Bean
@@ -38,7 +39,7 @@ public class SecurityConfiguration {
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                response.sendRedirect("/users/after-login");
+                                response.sendRedirect("/");
                             }
                         })
                 )
