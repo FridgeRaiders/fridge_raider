@@ -22,11 +22,11 @@ public class Recipe {
 
     private String nutrients;
 
-    private Integer servings;
+    private Short servings;
 
-    private Integer prep_time;
+    private Short prep_time;
 
-    private Integer cook_time;
+    private Short cook_time;
 
     private Boolean is_budget;
 
