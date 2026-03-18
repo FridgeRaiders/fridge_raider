@@ -40,3 +40,4 @@ dependency-reduced-pom.xml
 /src/main/resources/static/built
 .settings/
 **/.DS_Store
+.env
