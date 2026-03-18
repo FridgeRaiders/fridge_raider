@@ -1,0 +1,199 @@
+// Track selected ingredients, the debounce timer, and keyboard position
+const selectedIngredients = [];
+let debounceTimer = null;
+let activeIndex = -1;
+
+// Grab my HTML elements once at the top
+const input = document.getElementById('ingredient-input');
+const dropdown = document.getElementById('search-dropdown');
+const tagsContainer = document.getElementById('selected-tags');
+
+
+// Listen for typing — debounce so I don't fire a request on every keystroke
+input.addEventListener('input', function () {
+    const query = input.value.trim();
+
+    clearTimeout(debounceTimer);
+
+    // Don't bother querying if the input is too short
+    if (query.length < 2) {
+        closeDropdown();
+        return;
+    }
+
+    // Wait 300ms after the user stops typing before fetching
+    debounceTimer = setTimeout(function () {
+        fetchSuggestions(query);
+    }, 300);
+});
+
+
+// Fetch matching ingredients from my Spring Boot endpoint
+function fetchSuggestions(query) {
+    fetch('/search?query=' + encodeURIComponent(query))
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function (ingredients) {
+            renderDropdown(ingredients);
+        })
+        .catch(function (error) {
+            console.error('Search failed:', error);
+            closeDropdown();
+        });
+}
+
+
+// Build the dropdown list from the API results
+function renderDropdown(ingredients) {
+    dropdown.innerHTML = '';
+    activeIndex = -1;
+
+    if (ingredients.length === 0) {
+        closeDropdown();
+        return;
+    }
+
+    ingredients.forEach(function (ingredient, index) {
+        const li = document.createElement('li');
+        li.textContent = ingredient.name;
+        li.dataset.id = ingredient.id;
+        li.dataset.index = index;
+        li.className = 'px-4 py-2 text-sm text-white cursor-pointer hover:bg-indigo-600 transition-colors';
+
+        li.addEventListener('click', function () {
+            selectIngredient({ id: ingredient.id, name: ingredient.name });
+        });
+
+        dropdown.appendChild(li);
+    });
+
+    dropdown.classList.remove('hidden');
+}
+
+
+// Add the ingredient to my selected list if it isn't already there
+function selectIngredient(ingredient) {
+    const alreadyAdded = selectedIngredients.some(function (i) {
+        return i.id === ingredient.id;
+    });
+
+    if (!alreadyAdded) {
+        selectedIngredients.push(ingredient);
+        renderTags();
+    }
+
+    input.value = '';
+    closeDropdown();
+}
+
+
+// Rebuild the tag bubbles from my selectedIngredients array
+function renderTags() {
+    tagsContainer.innerHTML = '';
+
+    selectedIngredients.forEach(function (ingredient) {
+        const tag = document.createElement('span');
+        tag.className = 'flex items-center gap-2 bg-green-600 border border-green-400 text-white text-sm px-4 py-1.5 rounded-full';
+
+        const label = document.createElement('span');
+        label.textContent = ingredient.name;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.className = 'ml-2 text-white/70 hover:text-white text-lg font-bold leading-none cursor-pointer transition-colors';
+
+        removeBtn.addEventListener('click', function () {
+            removeIngredient(ingredient.id);
+        });
+
+        tag.appendChild(label);
+        tag.appendChild(removeBtn);
+        tagsContainer.appendChild(tag);
+    });
+}
+
+
+// Remove an ingredient by id and re-render the tags
+function removeIngredient(id) {
+    const index = selectedIngredients.findIndex(function (i) { return i.id === id; });
+    if (index !== -1) {
+        selectedIngredients.splice(index, 1);
+    }
+    renderTags();
+}
+
+
+// Add button — only accepts ingredients that exist in the dropdown
+function addFromInput() {
+    const query = input.value.trim();
+    if (query.length === 0) return;
+
+    const items = dropdown.querySelectorAll('li');
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].textContent.toLowerCase() === query.toLowerCase()) {
+            selectIngredient({
+                id: parseInt(items[i].dataset.id),
+                name: items[i].textContent
+            });
+            return;
+        }
+    }
+}
+
+
+// Arrow keys move through the dropdown, Enter selects, Escape closes
+input.addEventListener('keydown', function (event) {
+    const items = dropdown.querySelectorAll('li');
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        activeIndex = Math.min(activeIndex + 1, items.length - 1);
+        highlightItem(items);
+
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        activeIndex = Math.max(activeIndex - 1, 0);
+        highlightItem(items);
+
+    } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (activeIndex >= 0 && items[activeIndex]) {
+            items[activeIndex].click();
+        }
+
+    } else if (event.key === 'Escape') {
+        closeDropdown();
+    }
+});
+
+// Highlight the active item and clear the rest
+function highlightItem(items) {
+    items.forEach(function (item) {
+        item.classList.remove('bg-indigo-600');
+        item.classList.add('hover:bg-indigo-600');
+    });
+    if (items[activeIndex]) {
+        items[activeIndex].classList.add('bg-indigo-600');
+    }
+}
+
+
+// Hide and empty the dropdown
+function closeDropdown() {
+    dropdown.classList.add('hidden');
+    dropdown.innerHTML = '';
+    activeIndex = -1;
+}
+
+
+// Close the dropdown when clicking outside the search area
+document.addEventListener('click', function (event) {
+    const searchArea = document.getElementById('ingredient-search');
+    if (!searchArea.contains(event.target)) {
+        closeDropdown();
+    }
+});
