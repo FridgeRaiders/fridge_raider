@@ -48,27 +48,19 @@
         </button>
     </div>
 
-    <!-- Mobile/Tablet Dropdown Menu -->
-    <div id="mobile-menu" class="lg:hidden border-t border-green-700 pt-3 pb-4 space-y-1">
-        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
-            <i class="fa-solid fa-house mr-2"></i> Home
-        </a>
-        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
-            <i class="fa-solid fa-bookmark mr-2"></i> Saved Recipes
-        </a>
-        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
-            <i class="fa-solid fa-rss mr-2"></i> Feed
-        </a>
-        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
-            <i class="fa-solid fa-gear mr-2"></i> Profile
-        </a>
-        <div class="border-t border-green-700 pt-3 mt-2 flex items-center gap-4 px-3">
-            <a href="#" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
-                <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
-            </a>
-            <a href="#" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
-                Login
-            </a>
+        <div class="navbar-actions">
+<!--            <span sec:authorize="isAuthenticated()">-->
+
+
+                <a href="/logout" class="nav-link nav-logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+
+<!--</span>-->
+
+            <span>
+                <a href="/oauth2/authorization/okta" class="btn btn-primary btn-sm px-3">Login</a>
+            </span>
         </div>
     </div>
 </nav>

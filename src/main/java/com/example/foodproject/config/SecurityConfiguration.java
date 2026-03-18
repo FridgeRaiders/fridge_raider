@@ -20,42 +20,44 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    @Value("${spring.security.oauth2.client.provider.okta.issuer-uri}")
+    private String issuer;
+
+    @Value("${spring.security.oauth2.client.registration.okta.client-id}")
+    private String clientId;
+
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .requestMatchers("/", "/images/**", "/main.css", "/css/**", "/js/**", "/error", "/error/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new AuthenticationSuccessHandler() {
+                            @Override
+                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                response.sendRedirect("/users/after-login");
+                            }
+                        })
+                )
+                .logout(logout -> logout
+                        .addLogoutHandler(logoutHandler())
+                )
+                .headers(headers -> headers .frameOptions(frame -> frame.sameOrigin())
                 );
         return http.build();
     }
+
+    private LogoutHandler logoutHandler() {
+        return (request, response, authentication) -> {
+            try {
+                String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+                response.sendRedirect(issuer + "v2/logout?client_id=" + clientId + "&returnTo=" + baseUrl);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
 }
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/", "/images/**").permitAll()
-//                        .anyRequest().authenticated()
-//                );}
-//                .oauth2Login(oauth2 -> oauth2
-//                        .successHandler(new AuthenticationSuccessHandler() {
-//                            @Override
-//                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//                                response.sendRedirect("/users/after-login");
-//                            }
-//                        })
-//                )
-
-//                .logout(logout -> logout
-//                        .addLogoutHandler(logoutHandler()));
-//        return http.build();
-//    }
-
-//    private LogoutHandler logoutHandler() {
-//        return (request, response, authentication) -> {
-//            try {
-//                String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-//                response.sendRedirect(issuer + "v2/logout?client_id=" + clientId + "&returnTo=" + baseUrl);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        };
-//    }
-//}
