@@ -3,47 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<nav th:fragment="navbar" class="navbar-main" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="navbar-inner">
+<nav th:fragment="navbar" class="bg-green-900 shadow-md px-6 py-2" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-16">
 
-        <a href="/" class="navbar-brand">Fridge Raider</a>
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 shrink-0">
+            <img th:src="@{/images/fridge_raider_logo_only.png}" alt="Fridge Raider" class="h-12 w-12 rounded-full object-cover">
+            <span class="font-bold text-xl tracking-wide uppercase text-amber-400">Fridge Raider</span>
+        </a>
 
-        <div class="navbar-links">
-            <a href="#" class="nav-link">
-                <i class="fa-solid fa-house"></i> Home
+        <!-- Desktop Nav Links -->
+        <div class="flex items-center gap-6">
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+                <i class="fa-solid fa-house mr-1"></i> Home
             </a>
-            <a href="#" class="nav-link">
-                <i class="fa-solid fa-user"></i> Saved Recipes
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+                <i class="fa-solid fa-bookmark mr-1"></i> Saved Recipes
             </a>
-            <a href="#" class="nav-link">
-                <i class="fa-solid fa-user"></i> Feed
+            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+                <i class="fa-solid fa-rss mr-1"></i> Feed
             </a>
-            <span>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-gear"></i> Profile
-                </a>
-            </span>
+            <a sec:authorize="isAuthenticated()" href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+                <i class="fa-solid fa-gear mr-1"></i> Profile
+            </a>
         </div>
 
-        <div class="navbar-actions">
-<!--            <span sec:authorize="isAuthenticated()">-->
-
-
-                <a href="#" class="nav-link nav-logout">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                </a>
-
-<!--</span>-->
-
-            <span>
-                <a href="#" class="btn btn-primary btn-sm px-3">Login</a>
-            </span>
+        <!-- Desktop Auth Buttons -->
+        <div class="hidden md:flex items-center gap-4">
+            <a sec:authorize="isAuthenticated()" href="/logout" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium navbar-actions">
+                <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
+            </a>
+            <a sec:authorize="!isAuthenticated()" href="/oauth2/authorization/okta" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
+                Login
+            </a>
         </div>
-
     </div>
 </nav>
-
 </body>
 </html>

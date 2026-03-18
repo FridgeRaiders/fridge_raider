@@ -40,3 +40,7 @@ dependency-reduced-pom.xml
 /src/main/resources/static/built
 .settings/
 **/.DS_Store
+.env
+
+### Front End ###
+/src/main/frontend/node_modules/
