@@ -8,15 +8,16 @@
 </head>
 <body>
 <nav th:fragment="navbar" class="bg-green-900 shadow-md px-6 py-2" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-16">
 
-        <!-- Logo with name -->
-        <a href="/" class="flex items-center gap-3">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 shrink-0">
             <img th:src="@{/images/fridge_raider_logo_only.png}" alt="Fridge Raider" class="h-12 w-12 rounded-full object-cover">
             <span class="font-bold text-xl tracking-wide uppercase text-amber-400">Fridge Raider</span>
         </a>
 
-        <div class="flex items-center gap-6">
+        <!-- Desktop Nav Links -->
+        <div class="md:hidden md:flex items-center gap-6">
             <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-house mr-1"></i> Home
             </a>
@@ -31,7 +32,8 @@
             </a>
         </div>
 
-        <div class="flex items-center gap-4">
+        <!-- Desktop Auth Buttons -->
+        <div class="hidden md:flex items-center gap-4">
             <a href="#" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
                 <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
             </a>
@@ -40,6 +42,34 @@
             </a>
         </div>
 
+        <!-- Mobile/Tablet Hamburger -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-amber-400 hover:text-white rounded-md transition-colors">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Mobile/Tablet Dropdown Menu -->
+    <div id="mobile-menu" class="lg:hidden border-t border-green-700 pt-3 pb-4 space-y-1">
+        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
+            <i class="fa-solid fa-house mr-2"></i> Home
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
+            <i class="fa-solid fa-bookmark mr-2"></i> Saved Recipes
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
+            <i class="fa-solid fa-rss mr-2"></i> Feed
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:text-white hover:bg-green-800 transition-colors">
+            <i class="fa-solid fa-gear mr-2"></i> Profile
+        </a>
+        <div class="border-t border-green-700 pt-3 mt-2 flex items-center gap-4 px-3">
+            <a href="#" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
+                <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
+            </a>
+            <a href="#" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
+                Login
+            </a>
+        </div>
     </div>
 </nav>
 </body>
