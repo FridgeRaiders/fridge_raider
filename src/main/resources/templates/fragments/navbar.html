@@ -17,7 +17,7 @@
         </a>
 
         <!-- Desktop Nav Links -->
-        <div class="md:hidden md:flex items-center gap-6">
+        <div class="flex items-center gap-6">
             <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-house mr-1"></i> Home
             </a>
@@ -27,40 +27,19 @@
             <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-rss mr-1"></i> Feed
             </a>
-            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+            <a sec:authorize="isAuthenticated()" href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-gear mr-1"></i> Profile
             </a>
         </div>
 
         <!-- Desktop Auth Buttons -->
         <div class="hidden md:flex items-center gap-4">
-            <a href="#" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
+            <a sec:authorize="isAuthenticated()" href="/logout" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium navbar-actions">
                 <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
             </a>
-            <a href="#" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
+            <a sec:authorize="!isAuthenticated()" href="/oauth2/authorization/okta" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
                 Login
             </a>
-        </div>
-
-        <!-- Mobile/Tablet Hamburger -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 text-amber-400 hover:text-white rounded-md transition-colors">
-            <i class="fa-solid fa-bars text-xl"></i>
-        </button>
-    </div>
-
-        <div class="navbar-actions">
-<!--            <span sec:authorize="isAuthenticated()">-->
-
-
-                <a href="/logout" class="nav-link nav-logout">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                </a>
-
-<!--</span>-->
-
-            <span>
-                <a href="/oauth2/authorization/okta" class="btn btn-primary btn-sm px-3">Login</a>
-            </span>
         </div>
     </div>
 </nav>
