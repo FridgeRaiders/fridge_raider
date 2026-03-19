@@ -300,12 +300,18 @@ function renderRecipes(recipes) {
         card.querySelector('.recipe-cook-text').textContent = recipe.cookTime ? recipe.cookTime + ' mins cook' : '—';
         card.querySelector('.recipe-servings-text').textContent = recipe.servings ? recipe.servings + ' servings' : '—';
 
-        // Show budget badge if applicable
+        // Budget badge
         if (recipe.isBudget) {
             card.querySelector('.recipe-budget').classList.remove('hidden');
         }
 
-        // Handle image — hide fallback if image exists, show fallback if not
+        // Match score badge
+        const scoreBadge = card.querySelector('.recipe-match-score');
+        const score = recipe.matchScore;
+        scoreBadge.textContent = score + '% match';
+        scoreBadge.classList.add(...getScoreClasses(score));
+
+        // Image
         const img = card.querySelector('.recipe-image');
         const fallback = card.querySelector('.recipe-image-fallback');
         if (recipe.imageUrl) {
@@ -319,8 +325,24 @@ function renderRecipes(recipes) {
         container.appendChild(card);
     });
 }
+
+// Return colour classes based on the match score
+function getScoreClasses(score) {
+    if (score >= 75) {
+        return ['bg-green-400', 'text-white'];
+    } else if (score >= 40) {
+        return ['bg-amber-400', 'text-green-900'];
+    } else {
+        return ['bg-white/20', 'text-white'];
+    }
+}
+
 // Clear the results section
 function clearRecipes() {
     const container = document.getElementById('recipe-results');
     container.innerHTML = '';
 }
+
+const scoreBadge = card.querySelector('.recipe-match-score');
+console.log('scoreBadge element:', scoreBadge);
+console.log('score value:', recipe.matchScore);

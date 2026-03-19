@@ -8,5 +8,6 @@ public record RecipeDTO(
         Short servings,
         Short prepTime,
         Short cookTime,
-        Boolean isBudget
+        Boolean isBudget,
+        int matchScore
 ) {}
