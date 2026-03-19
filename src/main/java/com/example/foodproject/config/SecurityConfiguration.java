@@ -32,7 +32,7 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/images/**", "/main.css", "/css/**", "/js/**", "/error", "/error/**").permitAll()
+                        .requestMatchers("/", "/images/**", "/main.css", "/css/**", "/js/**", "/error", "/error/**", "/search.js").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
