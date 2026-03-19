@@ -1,14 +1,14 @@
 package com.example.foodproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USERS")
@@ -19,14 +19,15 @@ public class User {
 
     private String email;
 
-    private String display_name;
+    @Column(name="display_name", unique = true, nullable = true) // unique set to true, like a twitter @
+    private String displayName;
 
     @OneToMany(mappedBy = "user")
     private List<Recipe> recipes;
 
     public User(String email, String display_name) {
         this.email = email;
-        this.display_name = display_name;
+        this.displayName = display_name;
     }
 
     public User(String email){

@@ -14,12 +14,12 @@ public class UserTest {
 
     @Test
     public void userCreatedNoDisplayName() {
-        assertNull(userNoDisplayName.getDisplay_name());
+        assertNull(userNoDisplayName.getDisplayName());
     }
 
     @Test
     public void userCreatedWithDisplayName() {
-        assertThat(userWithDisplayName.getDisplay_name(), containsString("mr test"));
+        assertThat(userWithDisplayName.getDisplayName(), containsString("mr test"));
 
     }
     }
