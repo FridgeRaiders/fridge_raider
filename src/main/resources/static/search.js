@@ -82,10 +82,23 @@ function renderDropdown(ingredients) {
         li.textContent = ingredient.name;
         li.dataset.id = ingredient.id;
         li.dataset.index = index;
-        li.className = 'px-4 py-2 text-sm text-white cursor-pointer hover:bg-amber-400/20 transition-colors';
+        li.className = 'px-4 py-2 text-sm text-white cursor-pointer transition-colors';
+        li.setAttribute('role', 'option');
+        li.setAttribute('aria-selected', 'false');
 
         li.addEventListener('click', function () {
             selectIngredient({ id: ingredient.id, name: ingredient.name });
+        });
+
+        li.addEventListener('mouseenter', function () {
+            const items = dropdown.querySelectorAll('li');
+            items.forEach(i => i.classList.remove('bg-amber-400/20', 'text-amber-400'));
+            li.classList.add('bg-amber-400/20', 'text-amber-400');
+            activeIndex = index;
+        });
+
+        li.addEventListener('mouseleave', function () {
+            li.classList.remove('bg-amber-400/20', 'text-amber-400');
         });
 
         dropdown.appendChild(li);
@@ -195,10 +208,14 @@ input.addEventListener('keydown', function (event) {
 // Highlight the active item and clear the rest
 function highlightItem(items) {
     items.forEach(function (item) {
-        item.classList.remove('bg-amber-400/20');
+        item.classList.remove('bg-amber-400/20', 'text-amber-400');
+        item.setAttribute('aria-selected', 'false');
     });
+
     if (items[activeIndex]) {
-        items[activeIndex].classList.add('bg-amber-400/20');
+        items[activeIndex].classList.add('bg-amber-400/20', 'text-amber-400');
+        items[activeIndex].setAttribute('aria-selected', 'true');
+        items[activeIndex].scrollIntoView({ block: 'nearest' });
     }
 }
 
