@@ -104,6 +104,7 @@ function selectIngredient(ingredient) {
     if (!alreadyAdded) {
         selectedIngredients.push(ingredient);
         renderTags();
+        fetchRecipes();
     }
 
     input.value = '';
@@ -144,6 +145,7 @@ function removeIngredient(id) {
         selectedIngredients.splice(index, 1);
     }
     renderTags();
+    fetchRecipes();
 }
 
 
@@ -216,3 +218,84 @@ document.addEventListener('click', function (event) {
         closeDropdown();
     }
 });
+
+
+// Show/hide the placeholder and results section based on selected ingredients
+function updateResultsVisibility() {
+    const placeholder = document.getElementById('recipe-placeholder');
+    const resultsSection = document.getElementById('recipe-results-section');
+
+    if (selectedIngredients.length === 0) {
+        placeholder.classList.remove('hidden');
+        resultsSection.classList.add('hidden');
+    } else {
+        placeholder.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+    }
+}
+
+
+// Build a comma-separated string of ingredient names and fetch matching recipes
+function fetchRecipes() {
+    updateResultsVisibility();
+
+    if (selectedIngredients.length === 0) {
+        clearRecipes();
+        return;
+    }
+
+    const names = selectedIngredients.map(function (i) {
+        return encodeURIComponent(i.name);
+    }).join(',');
+
+    fetch('/recipes/search?ingredients=' + names)
+        .then(function (response) {
+            if (!response.ok) throw new Error('Recipe search failed');
+            return response.json();
+        })
+        .then(function (recipes) {
+            renderRecipes(recipes);
+        })
+        .catch(function (error) {
+            console.error('Recipe fetch error:', error);
+        });
+}
+
+
+// Render recipe cards into the results section
+function renderRecipes(recipes) {
+    const container = document.getElementById('recipe-results');
+    container.innerHTML = '';
+
+    if (recipes.length === 0) {
+        container.innerHTML = '<p class="text-amber-100/50 text-sm col-span-3">No recipes found for those ingredients.</p>';
+        return;
+    }
+
+    const template = document.getElementById('recipe-card-template');
+
+    recipes.forEach(function (recipe) {
+        // Clone the template — true means clone all child elements too
+        const card = template.content.cloneNode(true);
+
+        // Fill in each named element
+        card.querySelector('.recipe-description').textContent = recipe.description;
+        card.querySelector('.recipe-ingredients').textContent = recipe.ingredients;
+        card.querySelector('.recipe-prep').textContent = (recipe.prepTime ? recipe.prepTime + ' mins prep' : '—');
+        card.querySelector('.recipe-cook').textContent = (recipe.cookTime ? recipe.cookTime + ' mins cook' : '—');
+        card.querySelector('.recipe-servings').textContent = (recipe.servings ? recipe.servings + ' servings' : '—');
+
+        // Only show the budget badge if isBudget is true
+        if (recipe.isBudget) {
+            card.querySelector('.recipe-budget').classList.remove('hidden');
+        }
+
+        container.appendChild(card);
+    });
+}
+
+// Clear the results section
+function clearRecipes() {
+    const container = document.getElementById('recipe-results');
+    container.innerHTML = '';
+}
