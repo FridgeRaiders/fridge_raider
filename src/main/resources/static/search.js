@@ -3,13 +3,99 @@ const selectedIngredients = [];
 let debounceTimer = null;
 let activeIndex = -1;
 
-// Grab my HTML elements once at the top
+// Filter state
+let allRecipes = [];
+let filtersOpen = false;
+
+function toggleFilters() {
+    filtersOpen = !filtersOpen;
+    document.getElementById('filter-popover').classList.toggle('hidden', !filtersOpen);
+}
+
+function getActiveFilters() {
+    return {
+        budget:   document.getElementById('filter-budget')?.checked ?? false,
+        servings: document.getElementById('filter-servings')?.value  ?? '',
+        prep:     document.getElementById('filter-prep')?.value      ?? '',
+        cook:     document.getElementById('filter-cook')?.value      ?? '',
+    };
+}
+
+function hasActiveFilters(f) {
+    return f.budget || f.servings || f.prep || f.cook;
+}
+
+function applyFilters() {
+    const f = getActiveFilters();
+    updateFilterChips(f);
+    updateClearBtn(f);
+
+    const filtered = allRecipes.filter(recipe => {
+        if (f.budget && !recipe.isBudget) return false;
+
+        if (f.servings) {
+            const min = parseInt(f.servings);
+            if (f.servings === '5') {
+                if (!recipe.servings || recipe.servings < 5) return false;
+            } else {
+                if (!recipe.servings || recipe.servings < min || recipe.servings > min + 1) return false;
+            }
+        }
+
+        if (f.prep && recipe.prepTime && recipe.prepTime > parseInt(f.prep)) return false;
+        if (f.cook && recipe.cookTime && recipe.cookTime > parseInt(f.cook)) return false;
+
+        return true;
+    });
+
+    renderRecipes(filtered);
+}
+
+function clearFilters() {
+    document.getElementById('filter-budget').checked  = false;
+    document.getElementById('filter-servings').value  = '';
+    document.getElementById('filter-prep').value      = '';
+    document.getElementById('filter-cook').value      = '';
+    applyFilters();
+}
+
+function updateClearBtn(f) {
+    const active = hasActiveFilters(f);
+    document.getElementById('filter-clear-btn').classList.toggle('hidden', !active);
+    document.getElementById('filter-active-dot').classList.toggle('hidden', !active);
+}
+
+function updateFilterChips(f) {
+    const container = document.getElementById('filter-chips');
+    container.innerHTML = '';
+    const add = (label, resetFn) => {
+        const chip = document.createElement('span');
+        chip.className = 'flex items-center gap-1.5 text-xs bg-amber-400/15 text-amber-400 border border-amber-400/30 rounded-full px-2.5 py-0.5';
+        chip.innerHTML = `${label} <button onclick="${resetFn}" class="hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-xmark text-[10px]"></i></button>`;
+        container.appendChild(chip);
+    };
+    if (f.budget)   add('Budget friendly', "removeSingleFilter('budget')");
+    if (f.servings) add(`${f.servings === '5' ? '5+' : f.servings + '–' + (parseInt(f.servings) + 1)} servings`, "removeSingleFilter('servings')");
+    if (f.prep)     add(`Prep \u2264 ${f.prep} mins`, "removeSingleFilter('prep')");
+    if (f.cook)     add(`Cook \u2264 ${f.cook} mins`, "removeSingleFilter('cook')");
+}
+
+function removeSingleFilter(key) {
+    if (key === 'budget')   document.getElementById('filter-budget').checked = false;
+    if (key === 'servings') document.getElementById('filter-servings').value  = '';
+    if (key === 'prep')     document.getElementById('filter-prep').value      = '';
+    if (key === 'cook')     document.getElementById('filter-cook').value      = '';
+    applyFilters();
+}
+
+
+// Grab HTML elements once at the top
 const input = document.getElementById('ingredient-input');
 const dropdown = document.getElementById('search-dropdown');
 const tagsContainer = document.getElementById('selected-tags');
 
 
-// Listen for typing — debounce so I don't fire a request on every keystroke
+// Listen for typing — debounce so we don't fire a request on every keystroke
 input.addEventListener('input', function () {
     const query = input.value.trim();
 
@@ -33,6 +119,7 @@ input.addEventListener('input', function () {
     }, 300);
 });
 
+
 // Small delay so the click event resolves before the dropdown opens
 function showAuthMessage() {
     setTimeout(function () {
@@ -48,13 +135,11 @@ function showAuthMessage() {
 }
 
 
-// Fetch matching ingredients from my Spring Boot endpoint
+// Fetch matching ingredients from the Spring Boot endpoint
 function fetchSuggestions(query) {
     fetch('/search?query=' + encodeURIComponent(query))
         .then(function (response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(function (ingredients) {
@@ -108,7 +193,7 @@ function renderDropdown(ingredients) {
 }
 
 
-// Add the ingredient to my selected list if it isn't already there
+// Add the ingredient to the selected list if it isn't already there
 function selectIngredient(ingredient) {
     const alreadyAdded = selectedIngredients.some(function (i) {
         return i.id === ingredient.id;
@@ -125,7 +210,7 @@ function selectIngredient(ingredient) {
 }
 
 
-// Rebuild the tag bubbles from my selectedIngredients array
+// Rebuild the tag bubbles from the selectedIngredients array
 function renderTags() {
     tagsContainer.innerHTML = '';
 
@@ -137,7 +222,7 @@ function renderTags() {
         label.textContent = ingredient.name;
 
         const removeBtn = document.createElement('button');
-        removeBtn.textContent = '×';
+        removeBtn.textContent = '\u00d7';
         removeBtn.className = 'ml-2 text-green-900/60 hover:text-green-900 text-lg font-bold leading-none cursor-pointer transition-colors';
 
         removeBtn.addEventListener('click', function () {
@@ -205,6 +290,7 @@ input.addEventListener('keydown', function (event) {
     }
 });
 
+
 // Highlight the active item and clear the rest
 function highlightItem(items) {
     items.forEach(function (item) {
@@ -220,7 +306,7 @@ function highlightItem(items) {
 }
 
 
-// Hide and empty the dropdown
+// Hide and empty the ingredient dropdown
 function closeDropdown() {
     dropdown.classList.add('hidden');
     dropdown.innerHTML = '';
@@ -228,11 +314,23 @@ function closeDropdown() {
 }
 
 
-// Close the dropdown when clicking outside the search area
+// Close the ingredient dropdown when clicking outside the search area
 document.addEventListener('click', function (event) {
     const searchArea = document.getElementById('ingredient-search');
     if (!searchArea.contains(event.target)) {
         closeDropdown();
+    }
+});
+
+
+// Close the filter popover when clicking outside it
+document.addEventListener('click', function (event) {
+    if (!filtersOpen) return;
+    const popover = document.getElementById('filter-popover');
+    const btn = document.getElementById('filter-btn');
+    if (!popover.contains(event.target) && !btn.contains(event.target)) {
+        filtersOpen = false;
+        popover.classList.add('hidden');
     }
 });
 
@@ -257,6 +355,7 @@ function fetchRecipes() {
     updateResultsVisibility();
 
     if (selectedIngredients.length === 0) {
+        allRecipes = [];
         clearRecipes();
         return;
     }
@@ -271,7 +370,8 @@ function fetchRecipes() {
             return response.json();
         })
         .then(function (recipes) {
-            renderRecipes(recipes);
+            allRecipes = recipes;   // cache full results
+            applyFilters();         // render through filters
         })
         .catch(function (error) {
             console.error('Recipe fetch error:', error);
@@ -297,21 +397,18 @@ function renderRecipes(recipes) {
 
         cardEl.querySelector('.recipe-description').textContent = recipe.description;
         cardEl.querySelector('.recipe-ingredients').textContent = recipe.ingredients;
-        cardEl.querySelector('.recipe-prep-text').textContent = recipe.prepTime ? recipe.prepTime + ' mins prep' : '—';
-        cardEl.querySelector('.recipe-cook-text').textContent = recipe.cookTime ? recipe.cookTime + ' mins cook' : '—';
-        cardEl.querySelector('.recipe-servings-text').textContent = recipe.servings ? recipe.servings + ' servings' : '—';
+        cardEl.querySelector('.recipe-prep-text').textContent = recipe.prepTime ? recipe.prepTime + ' mins prep' : '\u2014';
+        cardEl.querySelector('.recipe-cook-text').textContent = recipe.cookTime ? recipe.cookTime + ' mins cook' : '\u2014';
+        cardEl.querySelector('.recipe-servings-text').textContent = recipe.servings ? recipe.servings + ' servings' : '\u2014';
 
-        // Budget badge
         if (recipe.isBudget) {
             cardEl.querySelector('.recipe-budget').classList.remove('hidden');
         }
 
-        // Match score badge
         const scoreBadge = cardEl.querySelector('.recipe-match-score');
         scoreBadge.textContent = recipe.matchScore + '% match';
         scoreBadge.classList.add(...getScoreClasses(recipe.matchScore));
 
-        // Image
         const img = cardEl.querySelector('.recipe-image');
         const fallback = cardEl.querySelector('.recipe-image-fallback');
         if (recipe.imageUrl) {

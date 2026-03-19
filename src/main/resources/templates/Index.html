@@ -20,45 +20,66 @@
     <div class="absolute inset-0 flex flex-col gap-3 justify-center opacity-60 pointer-events-none select-none overflow-hidden" aria-hidden="true">
 
         <!-- Row 1 — scrolls left -->
-        <div class="flex gap-3 animate-[scroll-left_35s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-left_35s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
         <!-- Row 2 — scrolls right -->
-        <div class="flex gap-3 animate-[scroll-right_28s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-right_28s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
         <!-- Row 3 — scrolls left, slower -->
-        <div class="flex gap-3 animate-[scroll-left_45s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-left_45s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
     </div>
@@ -91,19 +112,95 @@
                             autocomplete="off"
                             class="block min-w-0 grow bg-transparent py-2.5 pr-3 pl-2 text-sm text-white placeholder:text-amber-100/40 focus:outline-none"
                     />
-                    <button
-                            onclick="addFromInput()"
-                            class="m-1 shrink-0 rounded px-3 py-1.5 text-sm font-medium text-green-900 bg-amber-400 hover:bg-amber-300 active:scale-95 transition-all cursor-pointer"
-                    >
-                        Add
-                    </button>
+                    <div class="flex items-center gap-1 m-1">
+                        <!-- Filter button -->
+                        <button
+                                id="filter-btn"
+                                onclick="toggleFilters()"
+                                class="relative shrink-0 rounded px-3 py-1.5 text-sm font-medium text-amber-400 bg-white/10 hover:bg-white/15 active:scale-95 transition-all cursor-pointer border border-amber-400/30">
+                            <i class="fa-solid fa-sliders text-xs"></i>
+                            <span id="filter-active-dot" class="hidden absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400"></span>
+                        </button>
+                        <!-- Add button -->
+                        <button
+                                onclick="addFromInput()"
+                                class="shrink-0 rounded px-3 py-1.5 text-sm font-medium text-green-900 bg-amber-400 hover:bg-amber-300 active:scale-95 transition-all cursor-pointer"
+                        >Add</button>
+                    </div>
                 </div>
 
-                <!-- Dropdown anchored below the input -->
+                <!-- Ingredient search dropdown -->
                 <ul id="search-dropdown"
                     role="listbox"
                     class="absolute z-10 w-full mt-1 bg-green-950 border border-amber-400/20 rounded-md shadow-lg hidden">
                 </ul>
+
+                <!-- Filter popover — anchored to the right below the input bar -->
+                <div id="filter-popover"
+                     class="hidden absolute right-0 top-full mt-2 z-20 w-72 rounded-xl bg-green-950 border border-amber-400/20 shadow-xl shadow-black/40 p-4">
+
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-amber-400">Filters</span>
+                        <button id="filter-clear-btn"
+                                onclick="clearFilters()"
+                                class="hidden text-xs text-amber-400/50 hover:text-amber-400 transition-colors cursor-pointer underline underline-offset-2">
+                            Clear all
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+
+                        <!-- Budget toggle -->
+                        <label class="flex items-center justify-between gap-3 cursor-pointer">
+                            <span class="text-sm text-amber-100/70">Budget friendly only</span>
+                            <div class="relative">
+                                <input id="filter-budget" type="checkbox" class="sr-only peer" onchange="applyFilters()"/>
+                                <div class="w-10 h-5 rounded-full bg-white/10 peer-checked:bg-amber-400 transition-colors"></div>
+                                <div class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></div>
+                            </div>
+                        </label>
+
+                        <!-- Servings -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-servings" class="text-sm text-amber-100/70">Servings</label>
+                            <select id="filter-servings" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="1">1–2</option>
+                                <option value="3">3–4</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+
+                        <!-- Max prep time -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-prep" class="text-sm text-amber-100/70">Max prep time</label>
+                            <select id="filter-prep" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="10">10 mins</option>
+                                <option value="15">15 mins</option>
+                                <option value="30">30 mins</option>
+                                <option value="60">60 mins</option>
+                            </select>
+                        </div>
+
+                        <!-- Max cook time -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-cook" class="text-sm text-amber-100/70">Max cook time</label>
+                            <select id="filter-cook" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="15">15 mins</option>
+                                <option value="30">30 mins</option>
+                                <option value="45">45 mins</option>
+                                <option value="60">60 mins</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
             <!-- Selected ingredient tags -->
@@ -124,9 +221,11 @@
 
     <!-- Results section — populated by JavaScript -->
     <section id="recipe-results-section" class="hidden">
-        <h2 class="text-lg font-semibold text-amber-400 mb-6">Recipes you can make</h2>
-        <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 class="text-lg font-semibold text-amber-400">Recipes you can make</h2>
+            <div id="filter-chips" class="flex flex-wrap gap-2"></div>
         </div>
+        <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
     <!-- Recipe card template — invisible to the user, cloned by JavaScript -->
@@ -143,13 +242,10 @@
                 </div>
 
                 <!-- Match score badge — top left -->
-                <span class="recipe-match-score absolute top-3 left-3 text-xs font-bold px-2 py-0.5 rounded-full">
-                </span>
+                <span class="recipe-match-score absolute top-3 left-3 text-xs font-bold px-2 py-0.5 rounded-full"></span>
 
                 <!-- Budget badge — top right -->
-                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">
-                Budget
-                </span>
+                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">Budget</span>
             </div>
 
             <!-- Content -->
@@ -160,18 +256,18 @@
 
                 <!-- Meta row -->
                 <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
-                <span class="recipe-prep flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i>
-                    <span class="recipe-prep-text"></span>
-                </span>
+                    <span class="recipe-prep flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                        <span class="recipe-prep-text"></span>
+                    </span>
                     <span class="recipe-cook flex items-center gap-1">
-                    <i class="fa-solid fa-fire-burner"></i>
-                    <span class="recipe-cook-text"></span>
-                </span>
+                        <i class="fa-solid fa-fire-burner"></i>
+                        <span class="recipe-cook-text"></span>
+                    </span>
                     <span class="recipe-servings flex items-center gap-1">
-                    <i class="fa-solid fa-people-group"></i>
-                    <span class="recipe-servings-text"></span>
-                </span>
+                        <i class="fa-solid fa-people-group"></i>
+                        <span class="recipe-servings-text"></span>
+                    </span>
                 </div>
 
                 <!-- Divider -->
@@ -187,8 +283,10 @@
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 <!-- Tailwind safelist for dynamically applied classes -->
 <div class="hidden bg-green-400 bg-amber-400 bg-white/20 text-white text-green-900"></div>
+
 <script th:inline="javascript">
     const isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
 </script>
