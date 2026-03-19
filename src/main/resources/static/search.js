@@ -292,25 +292,33 @@ function renderRecipes(recipes) {
     const template = document.getElementById('recipe-card-template');
 
     recipes.forEach(function (recipe) {
-        // Clone the template — true means clone all child elements too
         const card = template.content.cloneNode(true);
 
-        // Fill in each named element
         card.querySelector('.recipe-description').textContent = recipe.description;
         card.querySelector('.recipe-ingredients').textContent = recipe.ingredients;
-        card.querySelector('.recipe-prep').textContent = (recipe.prepTime ? recipe.prepTime + ' mins prep' : '—');
-        card.querySelector('.recipe-cook').textContent = (recipe.cookTime ? recipe.cookTime + ' mins cook' : '—');
-        card.querySelector('.recipe-servings').textContent = (recipe.servings ? recipe.servings + ' servings' : '—');
+        card.querySelector('.recipe-prep-text').textContent = recipe.prepTime ? recipe.prepTime + ' mins prep' : '—';
+        card.querySelector('.recipe-cook-text').textContent = recipe.cookTime ? recipe.cookTime + ' mins cook' : '—';
+        card.querySelector('.recipe-servings-text').textContent = recipe.servings ? recipe.servings + ' servings' : '—';
 
-        // Only show the budget badge if isBudget is true
+        // Show budget badge if applicable
         if (recipe.isBudget) {
             card.querySelector('.recipe-budget').classList.remove('hidden');
+        }
+
+        // Handle image — hide fallback if image exists, show fallback if not
+        const img = card.querySelector('.recipe-image');
+        const fallback = card.querySelector('.recipe-image-fallback');
+        if (recipe.imageUrl) {
+            img.src = recipe.imageUrl;
+            img.alt = recipe.description;
+            fallback.classList.add('hidden');
+        } else {
+            img.classList.add('hidden');
         }
 
         container.appendChild(card);
     });
 }
-
 // Clear the results section
 function clearRecipes() {
     const container = document.getElementById('recipe-results');

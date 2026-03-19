@@ -131,16 +131,49 @@
 
     <!-- Recipe card template — invisible to the user, cloned by JavaScript -->
     <template id="recipe-card-template">
-        <div class="recipe-card flex flex-col justify-between rounded-xl bg-green-950 border border-amber-400/10 p-6 hover:border-amber-400/30 hover:bg-green-900/40 transition-all cursor-pointer">
-            <div class="flex items-start justify-between gap-2 mb-3">
-                <p class="recipe-description text-white font-semibold text-base leading-snug"></p>
-                <span class="recipe-budget hidden bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">Budget</span>
+        <div class="recipe-card group flex flex-col rounded-2xl bg-green-950 border border-amber-400/10 overflow-hidden hover:border-amber-400/40 hover:shadow-lg hover:shadow-black/30 transition-all duration-300 cursor-pointer">
+
+            <!-- Image -->
+            <div class="recipe-image-wrapper relative h-48 bg-green-900/60 overflow-hidden">
+                <img class="recipe-image w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="" alt="" />
+                <!-- Fallback shown when no image -->
+                <div class="recipe-image-fallback absolute inset-0 flex items-center justify-center text-4xl text-amber-400/20">
+                    <i class="fa-solid fa-bowl-food"></i>
+                </div>
+                <!-- Budget badge overlaid on image -->
+                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                Budget
+            </span>
             </div>
-            <p class="recipe-ingredients text-amber-100/40 text-xs leading-relaxed mb-4 line-clamp-2"></p>
-            <div class="flex flex-wrap gap-3 mt-auto pt-3 border-t border-amber-400/10">
-                <span class="recipe-prep text-amber-400/70 text-xs"></span>
-                <span class="recipe-cook text-amber-400/70 text-xs"></span>
-                <span class="recipe-servings text-amber-400/70 text-xs"></span>
+
+            <!-- Content -->
+            <div class="flex flex-col flex-1 p-5 gap-3">
+
+                <!-- Title -->
+                <h3 class="recipe-description text-white font-semibold text-base leading-snug"></h3>
+
+                <!-- Meta row -->
+                <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
+                <span class="recipe-prep flex items-center gap-1">
+                    <i class="fa-solid fa-clock"></i>
+                    <span class="recipe-prep-text"></span>
+                </span>
+                    <span class="recipe-cook flex items-center gap-1">
+                    <i class="fa-solid fa-fire-burner"></i>
+                    <span class="recipe-cook-text"></span>
+                </span>
+                    <span class="recipe-servings flex items-center gap-1">
+                    <i class="fa-solid fa-people-group"></i>
+                    <span class="recipe-servings-text"></span>
+                </span>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-amber-400/10"></div>
+
+                <!-- Ingredients preview -->
+                <p class="recipe-ingredients text-amber-100/40 text-xs leading-relaxed line-clamp-3"></p>
+
             </div>
         </div>
     </template>

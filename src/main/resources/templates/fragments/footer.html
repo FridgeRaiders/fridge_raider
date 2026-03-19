@@ -2,12 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Footer</title>
     <link th:href="@{/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<footer th:fragment="footer" class="bg-amber-400 text-green-900 text-center py-3 px-4 fixed bottom-0 w-full">
-    <p class="text-sm font-medium">© 2026 Fridge Raider</p>
+<footer th:fragment="footer" class="bg-amber-400 border-t border-green-900/20 w-full" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="max-w-7xl mx-auto flex flex-col items-center justify-center py-2 gap-1 px-4">
+
+        <!-- Heading -->
+        <p class="text-green-900 text-xs font-semibold tracking-wide uppercase">Join Our Socials</p>
+
+        <!-- Social links -->
+        <div class="flex items-center justify-between w-full max-w-sm">
+            <a href="https://facebook.com" class="flex flex-col items-center gap-0.5 text-green-900/70 hover:text-green-900 transition-colors text-xs font-medium">
+                <i class="fa-brands fa-facebook text-base"></i>
+                Facebook
+            </a>
+            <a href="https://instagram.com" class="flex flex-col items-center gap-0.5 text-green-900/70 hover:text-green-900 transition-colors text-xs font-medium">
+                <i class="fa-brands fa-instagram text-base"></i>
+                Instagram
+            </a>
+            <a href="https://twitter.com" class="flex flex-col items-center gap-0.5 text-green-900/70 hover:text-green-900 transition-colors text-xs font-medium">
+                <i class="fa-brands fa-twitter text-base"></i>
+                Twitter
+            </a>
+            <a href="https://pinterest.com" class="flex flex-col items-center gap-0.5 text-green-900/70 hover:text-green-900 transition-colors text-xs font-medium">
+                <i class="fa-brands fa-pinterest text-base"></i>
+                Pinterest
+            </a>
+        </div>
+
+    </div>
 </footer>
 </body>
 </html>
