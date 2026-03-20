@@ -3,6 +3,7 @@ package com.example.foodproject.service;
 import com.example.foodproject.dto.RecipeDTO;
 import com.example.foodproject.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class RecipeService {
                             recipe.getId(),
                             recipe.getName(),
                             recipe.getDescription(),
-                            recipe.getImage(),
+                            recipe.getImageLink(),
                             recipe.getIngredients(),
                             recipe.getNutrients(),
                             recipe.getSteps(),
@@ -56,20 +57,24 @@ public class RecipeService {
     private int calculateMatchScore(String recipeIngredients, List<String> selectedIngredients) {
         if (recipeIngredients == null || recipeIngredients.isBlank()) return 0;
 
-        String lowerRecipe = recipeIngredients.toLowerCase();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<String> ingredientList = mapper.readValue(
+                    recipeIngredients,
+                    mapper.getTypeFactory().constructCollectionType(List.class, String.class)
+            );
 
-        // Split the recipe ingredients text into individual ingredients
-        String[] recipeIngredientList = lowerRecipe.split(",");
+            long matches = ingredientList.stream()
+                    .filter(recipeIngredient ->
+                            selectedIngredients.stream()
+                                    .anyMatch(selected -> recipeIngredient.toLowerCase().contains(selected.toLowerCase()))
+                    )
+                    .count();
 
-        // Count how many recipe ingredients the user has
-        long matches = Arrays.stream(recipeIngredientList)
-                .filter(recipeIngredient ->
-                        selectedIngredients.stream()
-                                .anyMatch(selected -> recipeIngredient.contains(selected.toLowerCase()))
-                )
-                .count();
+            return (int) Math.round((matches * 100.0) / ingredientList.size());
 
-        // Percentage of the recipe's ingredients that the user has
-        return (int) Math.round((matches * 100.0) / recipeIngredientList.length);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

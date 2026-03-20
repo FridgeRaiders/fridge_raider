@@ -29,9 +29,6 @@ public class Recipe {
 
     private String nutrients;
 
-    @Column(columnDefinition = "jsonb")
-    private String steps;
-
     private Short servings;
 
     @Column(name = "prep_time")

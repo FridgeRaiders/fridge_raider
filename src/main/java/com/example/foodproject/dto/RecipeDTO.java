@@ -12,6 +12,6 @@ public record RecipeDTO(
         Short prepTime,
         Short cookTime,
         Boolean isBudget,
-        Integer difficulty,
+        String difficulty,
         int matchScore
 ) {}

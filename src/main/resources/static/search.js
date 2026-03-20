@@ -379,10 +379,9 @@ function fetchRecipes() {
 }
 
 
-// Map numeric difficulty to a label
+// Difficulty is already a string from the DTO — return it directly
 function getDifficultyLabel(difficulty) {
-    const labels = { 1: 'Easy', 2: 'More effort', 3: 'A challenge' };
-    return labels[difficulty] ?? '—';
+    return difficulty ?? '—';
 }
 
 
@@ -407,9 +406,9 @@ function renderRecipes(recipes) {
         cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '—';
 
         // Meta
-        cardEl.querySelector('.recipe-prep-text').textContent     = recipe.prepTime  ? recipe.prepTime  + ' mins' : '—';
-        cardEl.querySelector('.recipe-cook-text').textContent     = recipe.cookTime  ? recipe.cookTime  + ' mins' : '—';
-        cardEl.querySelector('.recipe-servings-text').textContent = recipe.servings  ? recipe.servings  + ' servings' : '—';
+        cardEl.querySelector('.recipe-prep-text').textContent       = recipe.prepTime  ? recipe.prepTime  + ' mins' : '—';
+        cardEl.querySelector('.recipe-cook-text').textContent       = recipe.cookTime  ? recipe.cookTime  + ' mins' : '—';
+        cardEl.querySelector('.recipe-servings-text').textContent   = recipe.servings  ? recipe.servings  + ' servings' : '—';
         cardEl.querySelector('.recipe-difficulty-text').textContent = getDifficultyLabel(recipe.difficulty);
 
         // Budget badge
