@@ -245,7 +245,9 @@
                 <span class="recipe-match-score absolute top-3 left-3 text-xs font-bold px-2 py-0.5 rounded-full"></span>
 
                 <!-- Budget badge — top right -->
-                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">Budget</span>
+                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                    Budget
+                </span>
             </div>
 
             <!-- Content -->
@@ -255,29 +257,29 @@
                 <div class="flex items-start justify-between gap-3">
                     <h3 class="recipe-description text-white font-semibold text-base leading-snug"></h3>
                     <!-- SAVE RECIPE BUTTON — wire up onclick to saveRecipe(recipe.id) once saved_recipes migration is complete -->
-                    <button
-                            class="recipe-save-btn shrink-0 text-amber-400/40 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
+                    <button class="recipe-save-btn shrink-0 text-amber-400/40 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
                             title="Save recipe — coming soon"
-                            disabled
-                    >
+                            disabled>
                         <i class="fa-regular fa-bookmark text-base"></i>
                     </button>
                 </div>
 
                 <!-- Meta row -->
                 <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
-        <span class="recipe-prep flex items-center gap-1">
-            <i class="fa-solid fa-clock"></i>
-            <span class="recipe-prep-text"></span>
-        </span>
+                    <span class="recipe-prep flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                    <span class="recipe-prep-text"></span>
+                    </span>
+
                     <span class="recipe-cook flex items-center gap-1">
-            <i class="fa-solid fa-fire-burner"></i>
-            <span class="recipe-cook-text"></span>
-        </span>
+                        <i class="fa-solid fa-fire-burner"></i>
+                    <span class="recipe-cook-text"></span>
+                    </span>
+
                     <span class="recipe-servings flex items-center gap-1">
-            <i class="fa-solid fa-people-group"></i>
-            <span class="recipe-servings-text"></span>
-        </span>
+                         <i class="fa-solid fa-people-group"></i>
+                    <span class="recipe-servings-text"></span>
+                    </span>
                 </div>
 
                 <!-- Divider -->
