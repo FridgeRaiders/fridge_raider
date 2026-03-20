@@ -16,7 +16,16 @@ public class Recipe {
 
     private String description;
 
+    private String name;
+
     private String ingredients;
+
+    private String steps;
+
+    private String difficulty;
+
+    @Column(name = "image_link")
+    private String imageLink;
 
     private String nutrients;
 
