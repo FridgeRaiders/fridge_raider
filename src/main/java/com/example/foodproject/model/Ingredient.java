@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +14,7 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Ingredient(@NonNull String name){

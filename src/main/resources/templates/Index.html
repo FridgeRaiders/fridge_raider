@@ -14,10 +14,10 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <!-- Hero -->
-<header class="relative bg-gray-800 border-b border-white/10 overflow-hidden">
+<header class="relative bg-green-950/50 border-b border-amber-400/20 min-h-96">
 
     <!-- Scrolling food photo background -->
-    <div class="absolute inset-0 flex flex-col gap-3 justify-center opacity-30 pointer-events-none select-none" aria-hidden="true">
+    <div class="absolute inset-0 flex flex-col gap-3 justify-center opacity-60 pointer-events-none select-none overflow-hidden" aria-hidden="true">
 
         <!-- Row 1 — scrolls left -->
         <div class="flex gap-3 animate-[scroll-left_35s_linear_infinite] whitespace-nowrap">
@@ -63,69 +63,92 @@
 
     </div>
 
-
     <!-- Dark overlay -->
-    <div class="absolute inset-0 bg-gray-800/70 pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-green-950/60 pointer-events-none" aria-hidden="true"></div>
 
     <!-- Hero content -->
     <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 flex flex-col items-center text-center">
 
         <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Raid your fridge.</h1>
-        <p class="mt-3 text-gray-300 text-base max-w-md">Add the ingredients you have and we'll find recipes you can make right now.</p>
+        <p class="mt-3 text-amber-100/70 text-base max-w-md">Add the ingredients you have and we'll find recipes you can make right now.</p>
 
         <!-- Search bar -->
         <div class="w-full max-w-xl mt-8" id="ingredient-search">
-            <div class="flex items-center rounded-md bg-white/10 backdrop-blur-sm pl-3 outline-1 -outline-offset-1 outline-white/20 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500 transition-all">
-                <div class="shrink-0 text-gray-400">
-                    <svg class="size-4" viewBox="0 0 16 16" fill="none">
-                        <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/>
-                        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                    </svg>
+
+            <!-- Input row -->
+            <div class="relative">
+                <div class="flex items-center rounded-md bg-white/10 backdrop-blur-sm pl-3 outline-1 -outline-offset-1 outline-amber-400/30 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-amber-400 transition-all">
+                    <div class="shrink-0 text-amber-400/60">
+                        <svg class="size-4" viewBox="0 0 16 16" fill="none">
+                            <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+                            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <input
+                            id="ingredient-input"
+                            type="text"
+                            placeholder="Search ingredients..."
+                            autocomplete="off"
+                            class="block min-w-0 grow bg-transparent py-2.5 pr-3 pl-2 text-sm text-white placeholder:text-amber-100/40 focus:outline-none"
+                    />
+                    <button
+                            onclick="addFromInput()"
+                            class="m-1 shrink-0 rounded px-3 py-1.5 text-sm font-medium text-green-900 bg-amber-400 hover:bg-amber-300 active:scale-95 transition-all cursor-pointer"
+                    >
+                        Add
+                    </button>
                 </div>
-                <input
-                        id="ingredient-input"
-                        type="text"
-                        placeholder="Search ingredients..."
-                        class="block min-w-0 grow bg-transparent py-2.5 pr-3 pl-2 text-sm text-white placeholder:text-gray-400 focus:outline-none"
-                />
-                <button
-                        onclick="addFromInput()"
-                        class="m-1 shrink-0 rounded px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all cursor-pointer"
-                >
-                    Add
-                </button>
+
+                <!-- Dropdown anchored below the input -->
+                <ul id="search-dropdown" class="absolute z-10 w-full mt-1 bg-green-950 border border-amber-400/20 rounded-md shadow-lg hidden">
+                </ul>
             </div>
 
+            <!-- Selected ingredient tags -->
+            <div id="selected-tags" class="flex flex-wrap gap-2 mt-3 min-h-10"></div>
+
+        </div>
     </div>
 </header>
 
-<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 pb-16">
 
-    <!-- Popular recipes -->
-    <section>
-        <h2 class="text-lg font-semibold text-white mb-4">Popular recipes</h2>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Default state — shown before any ingredients are selected -->
+    <div id="recipe-placeholder" class="flex flex-col items-center justify-center py-20 text-center">
+        <div class="text-5xl mb-4"><i class="fa-solid fa-bowl-food text-amber-400/40"></i></div>
+        <p class="text-amber-400 font-semibold text-lg">Start adding ingredients</p>
+        <p class="text-amber-100/40 text-sm mt-2 max-w-sm">Search for ingredients above and we'll find recipes you can make right now.</p>
+    </div>
 
-            <div th:each="i : ${#numbers.sequence(1, 6)}"
-                 class="flex items-center gap-4 rounded-lg bg-gray-800 outline-1 -outline-offset-1 outline-white/10 px-4 py-4 hover:bg-white/5 transition-colors cursor-pointer">
-                <div class="size-12 rounded-md bg-white/5 outline-1 -outline-offset-1 outline-white/10 flex items-center justify-center text-xl shrink-0">
-                    x
-                </div>
-                <div class="min-w-0">
-                    <p class="text-sm font-medium text-white truncate">Recipe name</p>
-                    <p class="text-xs text-gray-500 mt-0.5">0 ingredients matched</p>
-                </div>
-                <div class="ml-auto shrink-0">
-                        <i class="fa fa-chevron-right text-gray-600 text-sm"></i>
-                </div>
-            </div>
-
+    <!-- Results section — populated by JavaScript -->
+    <section id="recipe-results-section" class="hidden">
+        <h2 class="text-lg font-semibold text-amber-400 mb-6">Recipes you can make</h2>
+        <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         </div>
     </section>
+
+    <!-- Recipe card template — invisible to the user, cloned by JavaScript -->
+    <template id="recipe-card-template">
+        <div class="recipe-card flex flex-col justify-between rounded-xl bg-green-950 border border-amber-400/10 p-6 hover:border-amber-400/30 hover:bg-green-900/40 transition-all cursor-pointer">
+            <div class="flex items-start justify-between gap-2 mb-3">
+                <p class="recipe-description text-white font-semibold text-base leading-snug"></p>
+                <span class="recipe-budget hidden bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">Budget</span>
+            </div>
+            <p class="recipe-ingredients text-amber-100/40 text-xs leading-relaxed mb-4 line-clamp-2"></p>
+            <div class="flex flex-wrap gap-3 mt-auto pt-3 border-t border-amber-400/10">
+                <span class="recipe-prep text-amber-400/70 text-xs"></span>
+                <span class="recipe-cook text-amber-400/70 text-xs"></span>
+                <span class="recipe-servings text-amber-400/70 text-xs"></span>
+            </div>
+        </div>
+    </template>
 
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-
+<script th:inline="javascript">
+    const isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+</script>
+<script th:src="@{/search.js}"></script>
 </body>
 </html>

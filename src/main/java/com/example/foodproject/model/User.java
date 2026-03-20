@@ -6,12 +6,10 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-//@Data
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +20,15 @@ public class User {
     @Column(name="display_name", unique = true, nullable = true) // unique set to true, like a twitter @
     private String displayName;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Recipe> recipes;
 
-    public User(String email, String display_name) {
+    public User(String email, String displayName) {
         this.email = email;
-        this.displayName = display_name;
+        this.displayName = displayName;
     }
 
-    public User(String email){
+    public User(String email) {
         this.email = email;
     }
 }

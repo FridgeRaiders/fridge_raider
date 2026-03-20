@@ -18,16 +18,16 @@
 
         <!-- Desktop Nav Links -->
         <div class="flex items-center gap-6">
-            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+            <a href="/" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-house mr-1"></i> Home
             </a>
-            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+            <a href="/recipes" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-bookmark mr-1"></i> Saved Recipes
             </a>
-            <a href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+            <a href="/feed" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-rss mr-1"></i> Feed
             </a>
-            <a sec:authorize="isAuthenticated()" href="#" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
+            <a sec:authorize="isAuthenticated()" href="/profile" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-gear mr-1"></i> Profile
             </a>
         </div>

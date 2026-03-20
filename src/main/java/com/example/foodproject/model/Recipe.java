@@ -5,12 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-//@Data
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "RECIPES")
+@Table(name = "recipes")
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +22,18 @@ public class Recipe {
 
     private Short servings;
 
-    private Short prep_time;
+    @Column(name = "prep_time")
+    private Short prepTime;
 
-    private Short cook_time;
+    @Column(name = "cook_time")
+    private Short cookTime;
 
-    private Boolean is_budget;
+    @Column(name = "is_budget")
+    private Boolean isBudget;
 
     @JsonIgnore // added to prevent recursion error
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
 }
-
-
-
-
