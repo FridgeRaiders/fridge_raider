@@ -1,9 +1,8 @@
 package com.example.foodproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
@@ -17,7 +16,16 @@ public class Recipe {
 
     private String description;
 
+    private String name;
+
     private String ingredients;
+
+    private String steps;
+
+    private String difficulty;
+
+    @Column(name = "image_link")
+    private String imageLink;
 
     private String nutrients;
 
@@ -32,8 +40,9 @@ public class Recipe {
     @Column(name = "is_budget")
     private Boolean isBudget;
 
+    @JsonIgnore // added to prevent recursion error
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }
