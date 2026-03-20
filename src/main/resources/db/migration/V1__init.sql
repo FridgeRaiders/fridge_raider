@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(64) NOT NULL UNIQUE,
-    display_name VARCHAR(64)
+    display_name VARCHAR(64) UNIQUE
 );
 
 CREATE TABLE ingredients (
@@ -12,8 +12,12 @@ CREATE TABLE ingredients (
 CREATE TABLE recipes (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    name VARCHAR NOT NULL,
+    steps VARCHAR NOT NULL,
+    image_link VARCHAR,
     description VARCHAR NOT NULL,
     ingredients VARCHAR NOT NULL,
+    difficulty VARCHAR,
     nutrients VARCHAR,
     servings SMALLINT,
     prep_time SMALLINT,

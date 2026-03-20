@@ -691,13 +691,6 @@ video {
   margin-top: 2rem;
 }
 
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -1193,6 +1186,10 @@ video {
   color: rgb(254 243 199 / 0.4);
 }
 
+.text-amber-100\/50 {
+  color: rgb(254 243 199 / 0.5);
+}
+
 .text-amber-100\/70 {
   color: rgb(254 243 199 / 0.7);
 }
@@ -1234,10 +1231,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.text-amber-100\/50 {
-  color: rgb(254 243 199 / 0.5);
 }
 
 .underline {
