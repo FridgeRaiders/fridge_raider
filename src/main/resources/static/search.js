@@ -401,6 +401,11 @@ function renderRecipes(recipes) {
         const card = template.content.cloneNode(true);
         const cardEl = card.querySelector('.recipe-card');
 
+        // Wire up click to open modal — must be done before appending to DOM
+        cardEl.addEventListener('click', function () {
+            openModal(recipe);
+        });
+
         // Name and description
         cardEl.querySelector('.recipe-name').textContent        = recipe.name        ?? '—';
         cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '—';
@@ -454,3 +459,132 @@ function clearRecipes() {
     const container = document.getElementById('recipe-results');
     container.innerHTML = '';
 }
+
+
+// =====================
+// Modal
+// =====================
+
+function openModal(recipe) {
+    const modal = document.getElementById('recipe-modal');
+
+    // Image
+    const img      = document.getElementById('modal-image');
+    const fallback = document.getElementById('modal-image-fallback');
+    if (recipe.image) {
+        img.src = recipe.image;
+        img.alt = recipe.name ?? '';
+        img.classList.remove('hidden');
+        fallback.classList.add('hidden');
+    } else {
+        img.classList.add('hidden');
+        fallback.classList.remove('hidden');
+    }
+
+    // Title, description, difficulty
+    document.getElementById('modal-title').textContent       = recipe.name        ?? '—';
+    document.getElementById('modal-description').textContent = recipe.description ?? '—';
+    document.getElementById('modal-difficulty').textContent  = getDifficultyLabel(recipe.difficulty);
+
+    // Budget badge
+    document.getElementById('modal-budget').classList.toggle('hidden', !recipe.isBudget);
+
+    // Match score badge
+    const scoreBadge = document.getElementById('modal-match-score');
+    scoreBadge.textContent = recipe.matchScore + '% match';
+    scoreBadge.className = 'text-xs font-bold px-2 py-0.5 rounded-full ' + getScoreClasses(recipe.matchScore).join(' ');
+
+    // Meta
+    document.getElementById('modal-prep').textContent     = recipe.prepTime ? recipe.prepTime + ' mins' : '—';
+    document.getElementById('modal-cook').textContent     = recipe.cookTime ? recipe.cookTime + ' mins' : '—';
+    document.getElementById('modal-servings').textContent = recipe.servings ? recipe.servings + ' servings' : '—';
+
+    // Nutrients
+    const nutrientsGrid    = document.getElementById('modal-nutrients-grid');
+    const nutrientsSection = document.getElementById('modal-nutrients-section');
+    nutrientsGrid.innerHTML = '';
+
+    try {
+        const nutrients = typeof recipe.nutrients === 'string'
+            ? JSON.parse(recipe.nutrients)
+            : recipe.nutrients;
+
+        const entries = Object.entries(nutrients ?? {}).filter(([, v]) => v && v !== '0g' && v !== '0');
+
+        if (entries.length > 0) {
+            nutrientsSection.classList.remove('hidden');
+            entries.forEach(function ([key, value]) {
+                const cell = document.createElement('div');
+                cell.className = 'flex flex-col items-center bg-green-950 rounded-lg px-2 py-2 border border-amber-400/10';
+                cell.innerHTML = `
+                    <span class="text-white font-semibold text-sm">${value}</span>
+                    <span class="text-amber-100/40 text-xs mt-0.5 capitalize">${key}</span>
+                `;
+                nutrientsGrid.appendChild(cell);
+            });
+        } else {
+            nutrientsSection.classList.add('hidden');
+        }
+    } catch (e) {
+        nutrientsSection.classList.add('hidden');
+    }
+
+    // Ingredients
+    const ingredientsList = document.getElementById('modal-ingredients-list');
+    ingredientsList.innerHTML = '';
+
+    try {
+        const ingredients = typeof recipe.ingredients === 'string'
+            ? JSON.parse(recipe.ingredients)
+            : recipe.ingredients;
+
+        (ingredients ?? []).forEach(function (ingredient) {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-2 text-sm text-amber-100/70';
+            li.innerHTML = `<i class="fa-solid fa-circle text-amber-400/40 text-[6px] mt-1.5 shrink-0"></i><span>${ingredient}</span>`;
+            ingredientsList.appendChild(li);
+        });
+    } catch (e) {
+        ingredientsList.innerHTML = '<li class="text-amber-100/40 text-sm">Ingredients not available.</li>';
+    }
+
+    // Steps
+    const stepsList = document.getElementById('modal-steps-list');
+    stepsList.innerHTML = '';
+
+    try {
+        const steps = typeof recipe.steps === 'string'
+            ? JSON.parse(recipe.steps)
+            : recipe.steps;
+
+        (steps ?? []).forEach(function (step, index) {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-3 text-sm text-amber-100/70';
+            li.innerHTML = `
+                <span class="shrink-0 w-6 h-6 rounded-full bg-amber-400 text-green-900 text-xs font-bold flex items-center justify-center mt-0.5">${index + 1}</span>
+                <span class="leading-relaxed">${step}</span>
+            `;
+            stepsList.appendChild(li);
+        });
+    } catch (e) {
+        stepsList.innerHTML = '<li class="text-amber-100/40 text-sm">Method not available.</li>';
+    }
+
+    // Show modal and lock body scroll
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+
+function closeModal() {
+    document.getElementById('recipe-modal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
+
+// Close modal on Escape key
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
