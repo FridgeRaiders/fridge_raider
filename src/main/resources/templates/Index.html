@@ -197,6 +197,7 @@
                                 <option value="60">60 mins</option>
                             </select>
                         </div>
+
                     </div>
                 </div>
 
@@ -209,7 +210,7 @@
     </div>
 </header>
 
-<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 pb-16">
+<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 pb-6">
 
     <!-- Default state — shown before any ingredients are selected -->
     <div id="recipe-placeholder" class="flex flex-col items-center justify-center py-20 text-center">
@@ -225,6 +226,17 @@
             <div id="filter-chips" class="flex flex-wrap gap-2"></div>
         </div>
         <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+        <!-- Pagination -->
+        <nav id="recipe-pagination" class="hidden flex items-center justify-center gap-2 mt-16" aria-label="Recipe pages">
+            <button id="page-prev" class="px-3 py-1.5 rounded-md text-sm text-amber-400/70 hover:bg-amber-400/10 transition-all cursor-pointer disabled:text-amber-400/20 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <div id="page-numbers" class="flex items-center gap-2"></div>
+            <button id="page-next" class="px-3 py-1.5 rounded-md text-sm text-amber-400/70 hover:bg-amber-400/10 transition-all cursor-pointer disabled:text-amber-400/20 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </nav>
     </section>
 
     <!-- Recipe card template — invisible to the user, cloned by JavaScript -->
@@ -257,8 +269,8 @@
                     <h3 class="recipe-name text-white font-semibold text-base leading-snug"></h3>
                     <button class="recipe-save-btn shrink-0 text-amber-400/40 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
                             title="Save recipe — coming soon"
-                            disabled>
-                        <i class="fa-regular fa-bookmark text-base"></i>
+                            >
+                        <i class="fa-regular fa-bookmark"></i>
                     </button>
                 </div>
 
@@ -294,8 +306,7 @@
 
 </main>
 
-<!-- Recipe detail modal   -->
-
+<!-- Recipe detail modal -->
 <div id="recipe-modal"
      class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
      role="dialog"
@@ -334,11 +345,19 @@
                 <h2 id="modal-title" class="text-white font-bold text-xl leading-snug"></h2>
             </div>
 
-            <!-- Close button -->
-            <button onclick="closeModal()"
-                    class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors cursor-pointer">
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
+
+            <!-- Close + Save buttons -->
+            <div class="absolute top-3 right-3 flex items-center gap-2">
+                <button id="modal-save-btn"
+                        class="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-amber-400/60 hover:text-amber-400 transition-colors cursor-pointer"
+                        title="Save recipe">
+                    <i class="fa-regular fa-bookmark text-sm"></i>
+                </button>
+                <button onclick="closeModal()"
+                        class="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Scrollable body -->
