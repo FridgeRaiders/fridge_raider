@@ -698,6 +698,13 @@ video {
   -webkit-line-clamp: 3;
 }
 
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .block {
   display: block;
 }
@@ -1227,6 +1234,10 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-amber-100\/50 {
+  color: rgb(254 243 199 / 0.5);
 }
 
 .underline {

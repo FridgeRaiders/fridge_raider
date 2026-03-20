@@ -24,7 +24,7 @@ CREATE TABLE recipes (
 CREATE TABLE saved_recipes (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    recipe_id BIGINT NOT NULL REFERENCES recipes (id) ON DELETE CASCADE
+    recipe_id BIGINT NOT NULL REFERENCES recipes (id) ON DELETE CASCADE,
     CONSTRAINT unique_user_recipe UNIQUE (user_id, recipe_id)
 );
 

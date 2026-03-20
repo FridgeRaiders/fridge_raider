@@ -379,6 +379,13 @@ function fetchRecipes() {
 }
 
 
+// Map numeric difficulty to a label
+function getDifficultyLabel(difficulty) {
+    const labels = { 1: 'Easy', 2: 'More effort', 3: 'A challenge' };
+    return labels[difficulty] ?? '—';
+}
+
+
 // Render recipe cards into the results section
 function renderRecipes(recipes) {
     const container = document.getElementById('recipe-results');
@@ -395,25 +402,32 @@ function renderRecipes(recipes) {
         const card = template.content.cloneNode(true);
         const cardEl = card.querySelector('.recipe-card');
 
-        cardEl.querySelector('.recipe-description').textContent = recipe.description;
-        cardEl.querySelector('.recipe-ingredients').textContent = recipe.ingredients;
-        cardEl.querySelector('.recipe-prep-text').textContent = recipe.prepTime ? recipe.prepTime + ' mins prep' : '\u2014';
-        cardEl.querySelector('.recipe-cook-text').textContent = recipe.cookTime ? recipe.cookTime + ' mins cook' : '\u2014';
-        cardEl.querySelector('.recipe-servings-text').textContent = recipe.servings ? recipe.servings + ' servings' : '\u2014';
+        // Name and description
+        cardEl.querySelector('.recipe-name').textContent        = recipe.name        ?? '—';
+        cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '—';
 
+        // Meta
+        cardEl.querySelector('.recipe-prep-text').textContent     = recipe.prepTime  ? recipe.prepTime  + ' mins' : '—';
+        cardEl.querySelector('.recipe-cook-text').textContent     = recipe.cookTime  ? recipe.cookTime  + ' mins' : '—';
+        cardEl.querySelector('.recipe-servings-text').textContent = recipe.servings  ? recipe.servings  + ' servings' : '—';
+        cardEl.querySelector('.recipe-difficulty-text').textContent = getDifficultyLabel(recipe.difficulty);
+
+        // Budget badge
         if (recipe.isBudget) {
             cardEl.querySelector('.recipe-budget').classList.remove('hidden');
         }
 
+        // Match score badge
         const scoreBadge = cardEl.querySelector('.recipe-match-score');
         scoreBadge.textContent = recipe.matchScore + '% match';
         scoreBadge.classList.add(...getScoreClasses(recipe.matchScore));
 
-        const img = cardEl.querySelector('.recipe-image');
+        // Image
+        const img      = cardEl.querySelector('.recipe-image');
         const fallback = cardEl.querySelector('.recipe-image-fallback');
-        if (recipe.imageUrl) {
-            img.src = recipe.imageUrl;
-            img.alt = recipe.description;
+        if (recipe.image) {
+            img.src = recipe.image;
+            img.alt = recipe.name ?? '';
             fallback.classList.add('hidden');
         } else {
             img.classList.add('hidden');

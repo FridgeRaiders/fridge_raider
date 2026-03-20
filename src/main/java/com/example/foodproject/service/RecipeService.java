@@ -33,13 +33,17 @@ public class RecipeService {
                     int score = calculateMatchScore(recipe.getIngredients(), ingredients);
                     return new RecipeDTO(
                             recipe.getId(),
+                            recipe.getName(),
                             recipe.getDescription(),
+                            recipe.getImage(),
                             recipe.getIngredients(),
                             recipe.getNutrients(),
+                            recipe.getSteps(),
                             recipe.getServings(),
                             recipe.getPrepTime(),
                             recipe.getCookTime(),
                             recipe.getIsBudget(),
+                            recipe.getDifficulty(),
                             score
                     );
                 })

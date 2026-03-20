@@ -197,7 +197,6 @@
                                 <option value="60">60 mins</option>
                             </select>
                         </div>
-
                     </div>
                 </div>
 
@@ -253,10 +252,9 @@
             <!-- Content -->
             <div class="flex flex-col flex-1 p-5 gap-3">
 
-                <!-- Title + save button row -->
+                <!-- Name + save button row -->
                 <div class="flex items-start justify-between gap-3">
-                    <h3 class="recipe-description text-white font-semibold text-base leading-snug"></h3>
-                    <!-- SAVE RECIPE BUTTON — wire up onclick to saveRecipe(recipe.id) once saved_recipes migration is complete -->
+                    <h3 class="recipe-name text-white font-semibold text-base leading-snug"></h3>
                     <button class="recipe-save-btn shrink-0 text-amber-400/40 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
                             title="Save recipe — coming soon"
                             disabled>
@@ -264,29 +262,31 @@
                     </button>
                 </div>
 
-                <!-- Meta row -->
-                <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
-                    <span class="recipe-prep flex items-center gap-1">
-                        <i class="fa-solid fa-clock"></i>
-                    <span class="recipe-prep-text"></span>
-                    </span>
-
-                    <span class="recipe-cook flex items-center gap-1">
-                        <i class="fa-solid fa-fire-burner"></i>
-                    <span class="recipe-cook-text"></span>
-                    </span>
-
-                    <span class="recipe-servings flex items-center gap-1">
-                         <i class="fa-solid fa-people-group"></i>
-                    <span class="recipe-servings-text"></span>
-                    </span>
-                </div>
+                <!-- Description -->
+                <p class="recipe-description text-amber-100/50 text-xs leading-relaxed line-clamp-2"></p>
 
                 <!-- Divider -->
                 <div class="border-t border-amber-400/10"></div>
 
-                <!-- Ingredients preview -->
-                <p class="recipe-ingredients text-amber-100/40 text-xs leading-relaxed line-clamp-3"></p>
+                <!-- Meta row -->
+                <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
+                    <span class="recipe-prep flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                        <span class="recipe-prep-text"></span>
+                    </span>
+                    <span class="recipe-cook flex items-center gap-1">
+                        <i class="fa-solid fa-fire-burner"></i>
+                        <span class="recipe-cook-text"></span>
+                    </span>
+                    <span class="recipe-servings flex items-center gap-1">
+                        <i class="fa-solid fa-people-group"></i>
+                        <span class="recipe-servings-text"></span>
+                    </span>
+                    <span class="recipe-difficulty flex items-center gap-1">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span class="recipe-difficulty-text"></span>
+                    </span>
+                </div>
 
             </div>
         </div>
