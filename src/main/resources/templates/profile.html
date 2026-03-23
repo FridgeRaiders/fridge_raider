@@ -8,25 +8,74 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link th:href="@{/main.css}" rel="stylesheet"/>
 </head>
-<body>
+<body class="bg-gray-900 text-white">
 <div th:replace="fragments/navbar :: navbar"></div>
-<h1>Profile</h1>
 
-<div>
-    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+<div class="max-w-4xl mx-auto px-6 py-10">
 
-    <p>
-        <strong>Display Name:</strong>
-        <span th:text="${user.displayName} ?: 'Not set'"></span>
-    </p>
+    <!-- PROFILE HEADER -->
+    <div class="flex flex-col md:flex-row items-center gap-6 border-b border-white/10 pb-6">
+
+        <!-- Avatar -->
+        <div class="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center text-4xl font-bold text-amber-400">
+            <span th:text="${#strings.substring(user.email,0,1).toUpperCase()}"></span>
+        </div>
+
+        <!-- User Info -->
+        <div class="flex-1 text-center md:text-left">
+            <h2 class="text-2xl font-semibold">
+                <span th:text="${user.displayName} ?: 'No display name'"></span>
+            </h2>
+
+            <p class="text-gray-400 mt-1" th:text="${user.email}"></p>
+
+            <!-- Fake stats (Instagram feel) - FUTURE FEATURE -->
+            <div class="flex justify-center md:justify-start gap-6 mt-3 text-sm text-gray-300">
+                <span><strong>0</strong> recipes</span>
+                <span><strong>0</strong> followers</span>
+                <span><strong>0</strong> following</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE -->
+    <div class="mt-8 max-w-md mx-auto bg-white/5 p-6 rounded-xl border border-white/10 shadow-lg">
+        <h3 class="text-lg font-semibold mb-4 text-amber-400">Edit Profile</h3>
+
+        <form th:action="@{/profile/update}" method="post" class="flex flex-col gap-4">
+
+            <div class="flex flex-col">
+                <label class="text-sm text-gray-400 mb-1">Display Name</label>
+                <input
+                        type="text"
+                        name="displayName"
+                        placeholder="Enter new display name"
+                        class="px-4 py-2 rounded-md bg-gray-800 border border-white/10 focus:outline-none focus:border-amber-400 text-white"
+                        required />
+            </div>
+
+            <button
+                    type="submit"
+                    class="bg-amber-400 text-gray-900 font-semibold py-2 rounded-md hover:bg-amber-300 transition-all active:scale-95">
+                Update
+            </button>
+        </form>
+    </div>
+
+    <!-- CONTENT GRID (like posts) -->
+    <div class="mt-10">
+        <h3 class="text-lg font-semibold mb-4 text-amber-400">Recipes</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Placeholder cards -->
+            <div class="h-32 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center text-gray-500">
+                No recipes yet
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<h3>Update Display Name</h3>
-
-<form th:action="@{/profile/update}" method="post">
-    <input type="text" name="displayName" placeholder="Enter new display name" required />
-    <button type="submit">Update</button>
-</form>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
