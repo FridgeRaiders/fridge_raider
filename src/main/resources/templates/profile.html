@@ -11,6 +11,22 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <h1>Profile</h1>
+
+<div>
+    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+
+    <p>
+        <strong>Display Name:</strong>
+        <span th:text="${user.displayName} ?: 'Not set'"></span>
+    </p>
+</div>
+
+<h3>Update Display Name</h3>
+
+<form th:action="@{/profile/update}" method="post">
+    <input type="text" name="displayName" placeholder="Enter new display name" required />
+    <button type="submit">Update</button>
+</form>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
