@@ -41,7 +41,19 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public ModelAndView profilePage() {
-        return new ModelAndView("/profile");
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+
+        User user = userRepository.findUserByEmail(email).orElseThrow();
+
+        ModelAndView myProfile = new ModelAndView("profile");
+        myProfile.addObject("user", user);
+
+        return myProfile;
     }
 
     @GetMapping("/profile/{displayName}") // getting user by display name, need to create html file
