@@ -839,10 +839,6 @@ video {
   min-width: 0px;
 }
 
-.max-w-2xl {
-  max-width: 42rem;
-}
-
 .max-w-7xl {
   max-width: 80rem;
 }
@@ -1496,10 +1492,6 @@ video {
 
 .border-brand-green {
   border-color: rgba(74, 222, 128, 0.3);
-}
-
-#modal-match-score-feed {
-  display: none !important;
 }
 
 .placeholder\:text-amber-100\/40::-moz-placeholder {
