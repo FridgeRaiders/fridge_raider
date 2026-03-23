@@ -50,5 +50,11 @@ public class SavedService {
     public boolean isRecipeSaved(User user, Recipe recipe) {
         return savedRepository.existsByUserAndRecipe(user, recipe);
     }
+    // get IDs of all recipes saved by a user (useful for frontend)
+    public List<Long> getSavedRecipeIds(User user) {
+        return savedRepository.findByUser(user).stream()
+                .map(saved -> saved.getRecipe().getId())
+                .toList();
+    }
 
 }

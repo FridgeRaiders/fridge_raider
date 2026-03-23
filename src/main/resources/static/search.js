@@ -3,13 +3,105 @@ const selectedIngredients = [];
 let debounceTimer = null;
 let activeIndex = -1;
 
-// Grab my HTML elements once at the top
+// Filter state
+let allRecipes = [];
+let filteredRecipes = [];
+let filtersOpen = false;
+
+// Pagination
+const PAGE_SIZE = 9;
+let currentPage = 1;
+
+function toggleFilters() {
+    filtersOpen = !filtersOpen;
+    document.getElementById('filter-popover').classList.toggle('hidden', !filtersOpen);
+}
+
+function getActiveFilters() {
+    return {
+        budget:   document.getElementById('filter-budget')?.checked ?? false,
+        servings: document.getElementById('filter-servings')?.value  ?? '',
+        prep:     document.getElementById('filter-prep')?.value      ?? '',
+        cook:     document.getElementById('filter-cook')?.value      ?? '',
+    };
+}
+
+function hasActiveFilters(f) {
+    return f.budget || f.servings || f.prep || f.cook;
+}
+
+function applyFilters() {
+    const f = getActiveFilters();
+    updateFilterChips(f);
+    updateClearBtn(f);
+
+    filteredRecipes = allRecipes.filter(recipe => {
+        if (f.budget && !recipe.isBudget) return false;
+
+        if (f.servings) {
+            const min = parseInt(f.servings);
+            if (f.servings === '5') {
+                if (!recipe.servings || recipe.servings < 5) return false;
+            } else {
+                if (!recipe.servings || recipe.servings < min || recipe.servings > min + 1) return false;
+            }
+        }
+
+        if (f.prep && recipe.prepTime && recipe.prepTime > parseInt(f.prep)) return false;
+        if (f.cook && recipe.cookTime && recipe.cookTime > parseInt(f.cook)) return false;
+
+        return true;
+    });
+
+    currentPage = 1;
+    renderPage();
+}
+
+function clearFilters() {
+    document.getElementById('filter-budget').checked  = false;
+    document.getElementById('filter-servings').value  = '';
+    document.getElementById('filter-prep').value      = '';
+    document.getElementById('filter-cook').value      = '';
+    applyFilters();
+}
+
+function updateClearBtn(f) {
+    const active = hasActiveFilters(f);
+    document.getElementById('filter-clear-btn').classList.toggle('hidden', !active);
+    document.getElementById('filter-active-dot').classList.toggle('hidden', !active);
+}
+
+function updateFilterChips(f) {
+    const container = document.getElementById('filter-chips');
+    container.innerHTML = '';
+    const add = (label, resetFn) => {
+        const chip = document.createElement('span');
+        chip.className = 'flex items-center gap-1.5 text-xs bg-amber-400/15 text-amber-400 border border-amber-400/30 rounded-full px-2.5 py-0.5';
+        chip.innerHTML = `${label} <button onclick="${resetFn}" class="hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-xmark text-[10px]"></i></button>`;
+        container.appendChild(chip);
+    };
+    if (f.budget)   add('Budget friendly', "removeSingleFilter('budget')");
+    if (f.servings) add(`${f.servings === '5' ? '5+' : f.servings + '\u2013' + (parseInt(f.servings) + 1)} servings`, "removeSingleFilter('servings')");
+    if (f.prep)     add(`Prep \u2264 ${f.prep} mins`, "removeSingleFilter('prep')");
+    if (f.cook)     add(`Cook \u2264 ${f.cook} mins`, "removeSingleFilter('cook')");
+}
+
+function removeSingleFilter(key) {
+    if (key === 'budget')   document.getElementById('filter-budget').checked = false;
+    if (key === 'servings') document.getElementById('filter-servings').value  = '';
+    if (key === 'prep')     document.getElementById('filter-prep').value      = '';
+    if (key === 'cook')     document.getElementById('filter-cook').value      = '';
+    applyFilters();
+}
+
+
+// Grab HTML elements once at the top
 const input = document.getElementById('ingredient-input');
 const dropdown = document.getElementById('search-dropdown');
 const tagsContainer = document.getElementById('selected-tags');
 
 
-// Listen for typing — debounce so I don't fire a request on every keystroke
+// Listen for typing — debounce so we don't fire a request on every keystroke
 input.addEventListener('input', function () {
     const query = input.value.trim();
 
@@ -33,6 +125,7 @@ input.addEventListener('input', function () {
     }, 300);
 });
 
+
 // Small delay so the click event resolves before the dropdown opens
 function showAuthMessage() {
     setTimeout(function () {
@@ -48,13 +141,11 @@ function showAuthMessage() {
 }
 
 
-// Fetch matching ingredients from my Spring Boot endpoint
+// Fetch matching ingredients from the Spring Boot endpoint
 function fetchSuggestions(query) {
     fetch('/search?query=' + encodeURIComponent(query))
         .then(function (response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(function (ingredients) {
@@ -82,10 +173,23 @@ function renderDropdown(ingredients) {
         li.textContent = ingredient.name;
         li.dataset.id = ingredient.id;
         li.dataset.index = index;
-        li.className = 'px-4 py-2 text-sm text-white cursor-pointer hover:bg-amber-400/20 transition-colors';
+        li.className = 'px-4 py-2 text-sm text-white cursor-pointer transition-colors';
+        li.setAttribute('role', 'option');
+        li.setAttribute('aria-selected', 'false');
 
         li.addEventListener('click', function () {
             selectIngredient({ id: ingredient.id, name: ingredient.name });
+        });
+
+        li.addEventListener('mouseenter', function () {
+            const items = dropdown.querySelectorAll('li');
+            items.forEach(i => i.classList.remove('bg-amber-400/20', 'text-amber-400'));
+            li.classList.add('bg-amber-400/20', 'text-amber-400');
+            activeIndex = index;
+        });
+
+        li.addEventListener('mouseleave', function () {
+            li.classList.remove('bg-amber-400/20', 'text-amber-400');
         });
 
         dropdown.appendChild(li);
@@ -95,7 +199,7 @@ function renderDropdown(ingredients) {
 }
 
 
-// Add the ingredient to my selected list if it isn't already there
+// Add the ingredient to the selected list if it isn't already there
 function selectIngredient(ingredient) {
     const alreadyAdded = selectedIngredients.some(function (i) {
         return i.id === ingredient.id;
@@ -112,7 +216,7 @@ function selectIngredient(ingredient) {
 }
 
 
-// Rebuild the tag bubbles from my selectedIngredients array
+// Rebuild the tag bubbles from the selectedIngredients array
 function renderTags() {
     tagsContainer.innerHTML = '';
 
@@ -124,7 +228,7 @@ function renderTags() {
         label.textContent = ingredient.name;
 
         const removeBtn = document.createElement('button');
-        removeBtn.textContent = '×';
+        removeBtn.textContent = '\u00d7';
         removeBtn.className = 'ml-2 text-green-900/60 hover:text-green-900 text-lg font-bold leading-none cursor-pointer transition-colors';
 
         removeBtn.addEventListener('click', function () {
@@ -192,18 +296,23 @@ input.addEventListener('keydown', function (event) {
     }
 });
 
+
 // Highlight the active item and clear the rest
 function highlightItem(items) {
     items.forEach(function (item) {
-        item.classList.remove('bg-amber-400/20');
+        item.classList.remove('bg-amber-400/20', 'text-amber-400');
+        item.setAttribute('aria-selected', 'false');
     });
+
     if (items[activeIndex]) {
-        items[activeIndex].classList.add('bg-amber-400/20');
+        items[activeIndex].classList.add('bg-amber-400/20', 'text-amber-400');
+        items[activeIndex].setAttribute('aria-selected', 'true');
+        items[activeIndex].scrollIntoView({ block: 'nearest' });
     }
 }
 
 
-// Hide and empty the dropdown
+// Hide and empty the ingredient dropdown
 function closeDropdown() {
     dropdown.classList.add('hidden');
     dropdown.innerHTML = '';
@@ -211,11 +320,23 @@ function closeDropdown() {
 }
 
 
-// Close the dropdown when clicking outside the search area
+// Close the ingredient dropdown when clicking outside the search area
 document.addEventListener('click', function (event) {
     const searchArea = document.getElementById('ingredient-search');
     if (!searchArea.contains(event.target)) {
         closeDropdown();
+    }
+});
+
+
+// Close the filter popover when clicking outside it
+document.addEventListener('click', function (event) {
+    if (!filtersOpen) return;
+    const popover = document.getElementById('filter-popover');
+    const btn = document.getElementById('filter-btn');
+    if (!popover.contains(event.target) && !btn.contains(event.target)) {
+        filtersOpen = false;
+        popover.classList.add('hidden');
     }
 });
 
@@ -240,6 +361,7 @@ function fetchRecipes() {
     updateResultsVisibility();
 
     if (selectedIngredients.length === 0) {
+        allRecipes = [];
         clearRecipes();
         return;
     }
@@ -254,11 +376,109 @@ function fetchRecipes() {
             return response.json();
         })
         .then(function (recipes) {
-            renderRecipes(recipes);
+            allRecipes = recipes;   // cache full results
+            applyFilters();         // render through filters
         })
         .catch(function (error) {
             console.error('Recipe fetch error:', error);
         });
+}
+
+
+// Slice the filtered results for the current page and render cards + pagination
+function renderPage() {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end   = start + PAGE_SIZE;
+    renderRecipes(filteredRecipes.slice(start, end));
+    renderPagination();
+}
+
+
+// Build the pagination controls using the static HTML elements in index.html
+function renderPagination() {
+    const totalPages = Math.ceil(filteredRecipes.length / PAGE_SIZE);
+    const nav        = document.getElementById('recipe-pagination');
+    const prevBtn    = document.getElementById('page-prev');
+    const nextBtn    = document.getElementById('page-next');
+    const numbersEl  = document.getElementById('page-numbers');
+
+    // Hide pagination entirely if everything fits on one page
+    if (totalPages <= 1) {
+        nav.classList.add('hidden');
+        return;
+    }
+
+    nav.classList.remove('hidden');
+
+    // Prev button
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage();
+            document.getElementById('recipe-results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // Next button
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage();
+            document.getElementById('recipe-results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // Page number buttons
+    numbersEl.innerHTML = '';
+
+    const delta = 2;
+    const range = [];
+    for (let i = Math.max(1, currentPage - delta); i <= Math.min(totalPages, currentPage + delta); i++) {
+        range.push(i);
+    }
+
+    const addDots = () => {
+        const dots = document.createElement('span');
+        dots.textContent = '\u2026';
+        dots.className = 'px-2 text-amber-400/30 text-sm select-none';
+        numbersEl.appendChild(dots);
+    };
+
+    const addPageBtn = (p) => {
+        const b = document.createElement('button');
+        b.textContent = p;
+        const isActive = p === currentPage;
+        b.className = 'px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ' +
+            (isActive ? 'bg-amber-400 text-green-900 cursor-default' : 'text-amber-400/70 hover:bg-amber-400/10');
+        if (!isActive) {
+            b.onclick = () => {
+                currentPage = p;
+                renderPage();
+                document.getElementById('recipe-results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+        }
+        numbersEl.appendChild(b);
+    };
+
+    if (range[0] > 1) {
+        addPageBtn(1);
+        if (range[0] > 2) addDots();
+    }
+
+    range.forEach(p => addPageBtn(p));
+
+    if (range[range.length - 1] < totalPages) {
+        if (range[range.length - 1] < totalPages - 1) addDots();
+        addPageBtn(totalPages);
+    }
+}
+
+
+// Difficulty is already a string from the DTO — return it directly
+function getDifficultyLabel(difficulty) {
+    return difficulty ?? '\u2014';
 }
 
 
@@ -275,27 +495,289 @@ function renderRecipes(recipes) {
     const template = document.getElementById('recipe-card-template');
 
     recipes.forEach(function (recipe) {
-        // Clone the template — true means clone all child elements too
         const card = template.content.cloneNode(true);
+        const cardEl = card.querySelector('.recipe-card');
 
-        // Fill in each named element
-        card.querySelector('.recipe-description').textContent = recipe.description;
-        card.querySelector('.recipe-ingredients').textContent = recipe.ingredients;
-        card.querySelector('.recipe-prep').textContent = (recipe.prepTime ? recipe.prepTime + ' mins prep' : '—');
-        card.querySelector('.recipe-cook').textContent = (recipe.cookTime ? recipe.cookTime + ' mins cook' : '—');
-        card.querySelector('.recipe-servings').textContent = (recipe.servings ? recipe.servings + ' servings' : '—');
+        // Wire up save button — stop propagation so it doesn't open the modal
+        const saveBtn = cardEl.querySelector('.recipe-save-btn');
+        saveBtn.dataset.recipeId = recipe.id;
+       saveBtn.addEventListener('click', function (e) {
+           e.stopPropagation();
 
-        // Only show the budget badge if isBudget is true
+           const icon = saveBtn.querySelector('i');
+           const isCurrentlySaved = icon.classList.contains('fa-solid');
+
+           setSaveBtnState(saveBtn, !isCurrentlySaved);
+
+           // 2. Then sync with backend
+           //toggleSave(recipe.id, saveBtn);
+       });
+
+        // Wire up click to open modal
+        cardEl.addEventListener('click', function () {
+            openModal(recipe);
+        });
+
+        // Name and description
+        cardEl.querySelector('.recipe-name').textContent        = recipe.name        ?? '\u2014';
+        cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '\u2014';
+
+        // Meta
+        cardEl.querySelector('.recipe-prep-text').textContent       = recipe.prepTime  ? recipe.prepTime  + ' mins' : '\u2014';
+        cardEl.querySelector('.recipe-cook-text').textContent       = recipe.cookTime  ? recipe.cookTime  + ' mins' : '\u2014';
+        cardEl.querySelector('.recipe-servings-text').textContent   = recipe.servings  ? recipe.servings  + ' servings' : '\u2014';
+        cardEl.querySelector('.recipe-difficulty-text').textContent = getDifficultyLabel(recipe.difficulty);
+
+        // Budget badge
         if (recipe.isBudget) {
-            card.querySelector('.recipe-budget').classList.remove('hidden');
+            cardEl.querySelector('.recipe-budget').classList.remove('hidden');
+        }
+
+        // Match score badge
+        const scoreBadge = cardEl.querySelector('.recipe-match-score');
+        scoreBadge.textContent = recipe.matchScore + '% match';
+        scoreBadge.classList.add(...getScoreClasses(recipe.matchScore));
+
+        // Image
+        const img      = cardEl.querySelector('.recipe-image');
+        const fallback = cardEl.querySelector('.recipe-image-fallback');
+        if (recipe.image) {
+            img.src = recipe.image;
+            img.alt = recipe.name ?? '';
+            fallback.classList.add('hidden');
+        } else {
+            img.classList.add('hidden');
         }
 
         container.appendChild(card);
     });
 }
 
-// Clear the results section
-function clearRecipes() {
-    const container = document.getElementById('recipe-results');
-    container.innerHTML = '';
+
+// Return colour classes based on the match score
+function getScoreClasses(score) {
+    if (score >= 75) {
+        return ['bg-green-400', 'text-white'];
+    } else if (score >= 40) {
+        return ['bg-amber-400', 'text-green-900'];
+    } else {
+        return ['bg-white/20', 'text-white'];
+    }
 }
+
+
+// Clear the results section and hide pagination
+function clearRecipes() {
+    document.getElementById('recipe-results').innerHTML = '';
+    document.getElementById('recipe-pagination').classList.add('hidden');
+}
+
+
+// =====================
+// Save / Unsave
+// =====================
+
+// Toggle save state for a recipe — updates the button icon immediately,
+// then confirms with the server
+function toggleSave(recipeId, btn) {
+    if (!isAuthenticated) return;
+
+    fetch(`/recipes/${recipeId}/save`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            setSaveBtnState(btn, data.saved);
+            // Also sync the modal save button if it's open for the same recipe
+            const modalSaveBtn = document.getElementById('modal-save-btn');
+            if (modalSaveBtn && modalSaveBtn.dataset.recipeId == recipeId) {
+                setSaveBtnState(modalSaveBtn, data.saved);
+            }
+        })
+        .catch(err => console.error('Save failed:', err));
+}
+
+// Toggle save from the modal save button
+function toggleModalSave() {
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+    const recipeId = modalSaveBtn?.dataset.recipeId;
+    if (!recipeId || !isAuthenticated) return;
+
+    fetch(`/recipes/${recipeId}/save`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            setSaveBtnState(modalSaveBtn, data.saved);
+            // Also sync any matching card save button in the grid
+            document.querySelectorAll('.recipe-save-btn').forEach(btn => {
+                if (btn.dataset.recipeId == recipeId) {
+                    setSaveBtnState(btn, data.saved);
+                }
+            });
+        })
+        .catch(err => console.error('Save failed:', err));
+}
+
+// Set the visual state of a bookmark button — filled = saved, outline = unsaved
+function setSaveBtnState(btn, saved) {
+    const icon = btn.querySelector('i');
+    if (saved) {
+        icon.classList.replace('fa-regular', 'fa-solid');
+        btn.classList.add('text-amber-400');
+        btn.classList.remove('text-amber-400/40');
+    } else {
+        icon.classList.replace('fa-solid', 'fa-regular');
+        btn.classList.remove('text-amber-400');
+        btn.classList.add('text-amber-400/40');
+    }
+}
+
+
+
+// Modal
+
+function openModal(recipe) {
+    const modal = document.getElementById('recipe-modal');
+
+    // Image
+    const img      = document.getElementById('modal-image');
+    const fallback = document.getElementById('modal-image-fallback');
+    if (recipe.image) {
+        img.src = recipe.image;
+        img.alt = recipe.name ?? '';
+        img.classList.remove('hidden');
+        fallback.classList.add('hidden');
+    } else {
+        img.classList.add('hidden');
+        fallback.classList.remove('hidden');
+    }
+
+    // Title, description, difficulty
+    document.getElementById('modal-title').textContent       = recipe.name        ?? '\u2014';
+    document.getElementById('modal-description').textContent = recipe.description ?? '\u2014';
+    document.getElementById('modal-difficulty').textContent  = getDifficultyLabel(recipe.difficulty);
+
+    // Budget badge
+    document.getElementById('modal-budget').classList.toggle('hidden', !recipe.isBudget);
+
+    // Match score badge
+    const scoreBadge = document.getElementById('modal-match-score');
+    scoreBadge.textContent = recipe.matchScore + '% match';
+    scoreBadge.className = 'text-xs font-bold px-2 py-0.5 rounded-full ' + getScoreClasses(recipe.matchScore).join(' ');
+
+    // Meta
+    document.getElementById('modal-prep').textContent     = recipe.prepTime ? recipe.prepTime + ' mins' : '\u2014';
+    document.getElementById('modal-cook').textContent     = recipe.cookTime ? recipe.cookTime + ' mins' : '\u2014';
+    document.getElementById('modal-servings').textContent = recipe.servings ? recipe.servings + ' servings' : '\u2014';
+
+    // Nutrients
+    const nutrientsGrid    = document.getElementById('modal-nutrients-grid');
+    const nutrientsSection = document.getElementById('modal-nutrients-section');
+    nutrientsGrid.innerHTML = '';
+
+    try {
+        const nutrients = typeof recipe.nutrients === 'string'
+            ? JSON.parse(recipe.nutrients)
+            : recipe.nutrients;
+
+        const entries = Object.entries(nutrients ?? {}).filter(([, v]) => v && v !== '0g' && v !== '0');
+
+        if (entries.length > 0) {
+            nutrientsSection.classList.remove('hidden');
+            entries.forEach(function ([key, value]) {
+                const cell = document.createElement('div');
+                cell.className = 'flex flex-col items-center bg-green-950 rounded-lg px-2 py-2 border border-amber-400/10';
+                cell.innerHTML = `
+                    <span class="text-white font-semibold text-sm">${value}</span>
+                    <span class="text-amber-100/40 text-xs mt-0.5 capitalize">${key}</span>
+                `;
+                nutrientsGrid.appendChild(cell);
+            });
+        } else {
+            nutrientsSection.classList.add('hidden');
+        }
+    } catch (e) {
+        nutrientsSection.classList.add('hidden');
+    }
+
+    // Ingredients
+    const ingredientsList = document.getElementById('modal-ingredients-list');
+    ingredientsList.innerHTML = '';
+
+    try {
+        const ingredients = typeof recipe.ingredients === 'string'
+            ? JSON.parse(recipe.ingredients)
+            : recipe.ingredients;
+
+        (ingredients ?? []).forEach(function (ingredient) {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-2 text-sm text-amber-100/70';
+            li.innerHTML = `<i class="fa-solid fa-circle text-amber-400/40 text-[6px] mt-1.5 shrink-0"></i><span>${ingredient}</span>`;
+            ingredientsList.appendChild(li);
+        });
+    } catch (e) {
+        ingredientsList.innerHTML = '<li class="text-amber-100/40 text-sm">Ingredients not available.</li>';
+    }
+
+    // Steps
+    const stepsList = document.getElementById('modal-steps-list');
+    stepsList.innerHTML = '';
+
+    try {
+        const steps = typeof recipe.steps === 'string'
+            ? JSON.parse(recipe.steps)
+            : recipe.steps;
+
+        (steps ?? []).forEach(function (step, index) {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-3 text-sm text-amber-100/70';
+            li.innerHTML = `
+                 <span class="shrink-0 w-8 h-8 rounded-full bg-amber-400 text-green-900 text-base font-bold flex items-center justify-center">
+                    ${index + 1}
+                 </span>
+                 <span class="leading-relaxed">${step}</span>
+            `;
+
+            stepsList.appendChild(li);
+        });
+    } catch (e) {
+        stepsList.innerHTML = '<li class="text-amber-100/40 text-sm">Method not available.</li>';
+    }
+
+    // Show modal and lock body scroll
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+
+    // Save button — toggles between outline and filled bookmark icon
+    const saveBtn = document.getElementById('modal-save-btn');
+    saveBtn.onclick = function () {
+        const icon = saveBtn.querySelector('i');
+        icon.classList.toggle('fa-regular');
+        icon.classList.toggle('fa-solid');
+        saveBtn.classList.toggle('text-amber-400/60');
+        saveBtn.classList.toggle('text-amber-400');
+    };
+
+    // Set recipe id on modal save button and check initial saved state
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+    modalSaveBtn.dataset.recipeId = recipe.id;
+    setSaveBtnState(modalSaveBtn, false); // reset while we check
+
+    if (isAuthenticated) {
+        fetch(`/recipes/${recipe.id}/saved`)
+            .then(res => res.json())
+            .then(data => setSaveBtnState(modalSaveBtn, data.saved))
+            .catch(() => {});
+    }
+}
+
+
+function closeModal() {
+    document.getElementById('recipe-modal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
+
+// Close modal on Escape key
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
