@@ -20,45 +20,66 @@
     <div class="absolute inset-0 flex flex-col gap-3 justify-center opacity-60 pointer-events-none select-none overflow-hidden" aria-hidden="true">
 
         <!-- Row 1 — scrolls left -->
-        <div class="flex gap-3 animate-[scroll-left_35s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-left_35s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
         <!-- Row 2 — scrolls right -->
-        <div class="flex gap-3 animate-[scroll-right_28s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-right_28s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
         <!-- Row 3 — scrolls left, slower -->
-        <div class="flex gap-3 animate-[scroll-left_45s_linear_infinite] whitespace-nowrap">
-            <div th:each="i : ${#numbers.sequence(1,2)}" class="flex gap-3">
-                <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-                <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
-            </div>
+        <div class="flex gap-3 animate-[scroll-left_45s_linear_infinite] whitespace-nowrap will-change-transform">
+            <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <!-- Duplicate set for seamless loop -->
+            <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf04?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
+            <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=200&h=130&fit=crop" class="h-32 w-48 object-cover rounded-lg shrink-0" alt=""/>
         </div>
 
     </div>
@@ -91,17 +112,95 @@
                             autocomplete="off"
                             class="block min-w-0 grow bg-transparent py-2.5 pr-3 pl-2 text-sm text-white placeholder:text-amber-100/40 focus:outline-none"
                     />
-                    <button
-                            onclick="addFromInput()"
-                            class="m-1 shrink-0 rounded px-3 py-1.5 text-sm font-medium text-green-900 bg-amber-400 hover:bg-amber-300 active:scale-95 transition-all cursor-pointer"
-                    >
-                        Add
-                    </button>
+                    <div class="flex items-center gap-1 m-1">
+                        <!-- Filter button -->
+                        <button
+                                id="filter-btn"
+                                onclick="toggleFilters()"
+                                class="relative shrink-0 rounded px-3 py-1.5 text-sm font-medium text-amber-400 bg-white/10 hover:bg-white/15 active:scale-95 transition-all cursor-pointer border border-amber-400/30">
+                            <i class="fa-solid fa-sliders text-xs"></i>
+                            <span id="filter-active-dot" class="hidden absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400"></span>
+                        </button>
+                        <!-- Add button -->
+                        <button
+                                onclick="addFromInput()"
+                                class="shrink-0 rounded px-3 py-1.5 text-sm font-medium text-green-900 bg-amber-400 hover:bg-amber-300 active:scale-95 transition-all cursor-pointer"
+                        >Add</button>
+                    </div>
                 </div>
 
-                <!-- Dropdown anchored below the input -->
-                <ul id="search-dropdown" class="absolute z-10 w-full mt-1 bg-green-950 border border-amber-400/20 rounded-md shadow-lg hidden">
+                <!-- Ingredient search dropdown -->
+                <ul id="search-dropdown"
+                    role="listbox"
+                    class="absolute z-10 w-full mt-1 bg-green-950 border border-amber-400/20 rounded-md shadow-lg hidden">
                 </ul>
+
+                <!-- Filter popover — anchored to the right below the input bar -->
+                <div id="filter-popover"
+                     class="hidden absolute right-0 top-full mt-2 z-20 w-72 rounded-xl bg-green-950 border border-amber-400/20 shadow-xl shadow-black/40 p-4">
+
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-semibold text-amber-400">Filters</span>
+                        <button id="filter-clear-btn"
+                                onclick="clearFilters()"
+                                class="hidden text-xs text-amber-400/50 hover:text-amber-400 transition-colors cursor-pointer underline underline-offset-2">
+                            Clear all
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+
+                        <!-- Budget toggle -->
+                        <label class="flex items-center justify-between gap-3 cursor-pointer">
+                            <span class="text-sm text-amber-100/70">Budget friendly only</span>
+                            <div class="relative">
+                                <input id="filter-budget" type="checkbox" class="sr-only peer" onchange="applyFilters()"/>
+                                <div class="w-10 h-5 rounded-full bg-white/10 peer-checked:bg-amber-400 transition-colors"></div>
+                                <div class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></div>
+                            </div>
+                        </label>
+
+                        <!-- Servings -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-servings" class="text-sm text-amber-100/70">Servings</label>
+                            <select id="filter-servings" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="1">1–2</option>
+                                <option value="3">3–4</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+
+                        <!-- Max prep time -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-prep" class="text-sm text-amber-100/70">Max prep time</label>
+                            <select id="filter-prep" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="10">10 mins</option>
+                                <option value="15">15 mins</option>
+                                <option value="30">30 mins</option>
+                                <option value="60">60 mins</option>
+                            </select>
+                        </div>
+
+                        <!-- Max cook time -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="filter-cook" class="text-sm text-amber-100/70">Max cook time</label>
+                            <select id="filter-cook" onchange="applyFilters()"
+                                    class="w-full rounded-md bg-white/10 border border-amber-400/20 text-white text-sm px-3 py-1.5 focus:outline-none focus:border-amber-400 cursor-pointer">
+                                <option value="">Any</option>
+                                <option value="15">15 mins</option>
+                                <option value="30">30 mins</option>
+                                <option value="45">45 mins</option>
+                                <option value="60">60 mins</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
             <!-- Selected ingredient tags -->
@@ -111,7 +210,7 @@
     </div>
 </header>
 
-<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 pb-16">
+<main class="flex-1 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 pb-6">
 
     <!-- Default state — shown before any ingredients are selected -->
     <div id="recipe-placeholder" class="flex flex-col items-center justify-center py-20 text-center">
@@ -122,30 +221,197 @@
 
     <!-- Results section — populated by JavaScript -->
     <section id="recipe-results-section" class="hidden">
-        <h2 class="text-lg font-semibold text-amber-400 mb-6">Recipes you can make</h2>
-        <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 class="text-lg font-semibold text-amber-400">Recipes you can make</h2>
+            <div id="filter-chips" class="flex flex-wrap gap-2"></div>
         </div>
+        <div id="recipe-results" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+        <!-- Pagination -->
+        <nav id="recipe-pagination" class="hidden flex items-center justify-center gap-2 mt-16" aria-label="Recipe pages">
+            <button id="page-prev" class="px-3 py-1.5 rounded-md text-sm text-amber-400/70 hover:bg-amber-400/10 transition-all cursor-pointer disabled:text-amber-400/20 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <div id="page-numbers" class="flex items-center gap-2"></div>
+            <button id="page-next" class="px-3 py-1.5 rounded-md text-sm text-amber-400/70 hover:bg-amber-400/10 transition-all cursor-pointer disabled:text-amber-400/20 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </nav>
     </section>
 
     <!-- Recipe card template — invisible to the user, cloned by JavaScript -->
     <template id="recipe-card-template">
-        <div class="recipe-card flex flex-col justify-between rounded-xl bg-green-950 border border-amber-400/10 p-6 hover:border-amber-400/30 hover:bg-green-900/40 transition-all cursor-pointer">
-            <div class="flex items-start justify-between gap-2 mb-3">
-                <p class="recipe-description text-white font-semibold text-base leading-snug"></p>
-                <span class="recipe-budget hidden bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">Budget</span>
+        <div class="recipe-card group flex flex-col rounded-2xl bg-green-950 border border-amber-400/10 overflow-hidden hover:border-amber-400/40 hover:shadow-lg hover:shadow-black/30 transition-all duration-300 cursor-pointer">
+
+            <!-- Image -->
+            <div class="recipe-image-wrapper relative h-48 bg-green-900/60 overflow-hidden">
+                <img class="recipe-image w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="" alt="" />
+
+                <!-- Fallback shown when no image -->
+                <div class="recipe-image-fallback absolute inset-0 flex items-center justify-center text-4xl text-amber-400/20">
+                    <i class="fa-solid fa-bowl-food"></i>
+                </div>
+
+                <!-- Match score badge — top left -->
+                <span class="recipe-match-score absolute top-3 left-3 text-xs font-bold px-2 py-0.5 rounded-full"></span>
+
+                <!-- Budget badge — top right -->
+                <span class="recipe-budget hidden absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                    Budget
+                </span>
             </div>
-            <p class="recipe-ingredients text-amber-100/40 text-xs leading-relaxed mb-4 line-clamp-2"></p>
-            <div class="flex flex-wrap gap-3 mt-auto pt-3 border-t border-amber-400/10">
-                <span class="recipe-prep text-amber-400/70 text-xs"></span>
-                <span class="recipe-cook text-amber-400/70 text-xs"></span>
-                <span class="recipe-servings text-amber-400/70 text-xs"></span>
+
+            <!-- Content -->
+            <div class="flex flex-col flex-1 p-5 gap-3">
+
+                <!-- Name + save button row -->
+                <div class="flex items-start justify-between gap-3">
+                    <h3 class="recipe-name text-white font-semibold text-base leading-snug"></h3>
+                    <button class="recipe-save-btn shrink-0 text-amber-400/40 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
+                            title="Save recipe — coming soon"
+                            >
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+                </div>
+
+                <!-- Description -->
+                <p class="recipe-description text-amber-100/50 text-xs leading-relaxed line-clamp-2"></p>
+
+                <!-- Divider -->
+                <div class="border-t border-amber-400/10"></div>
+
+                <!-- Meta row -->
+                <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
+                    <span class="recipe-prep flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                        <span class="recipe-prep-text"></span>
+                    </span>
+                    <span class="recipe-cook flex items-center gap-1">
+                        <i class="fa-solid fa-fire-burner"></i>
+                        <span class="recipe-cook-text"></span>
+                    </span>
+                    <span class="recipe-servings flex items-center gap-1">
+                        <i class="fa-solid fa-people-group"></i>
+                        <span class="recipe-servings-text"></span>
+                    </span>
+                    <span class="recipe-difficulty flex items-center gap-1">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span class="recipe-difficulty-text"></span>
+                    </span>
+                </div>
+
             </div>
         </div>
     </template>
 
 </main>
 
+<!-- Recipe detail modal -->
+<div id="recipe-modal"
+     class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modal-title">
+
+    <!-- Backdrop -->
+    <div id="modal-backdrop"
+         class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+         onclick="closeModal()">
+    </div>
+
+    <!-- Panel -->
+    <div class="relative w-full sm:max-w-2xl max-h-[92dvh] sm:max-h-[88dvh] flex flex-col rounded-t-2xl sm:rounded-2xl bg-gray-900 border border-amber-400/15 shadow-2xl overflow-hidden">
+
+        <!-- Hero image -->
+        <div class="relative h-52 sm:h-64 bg-green-950 shrink-0 overflow-hidden">
+            <img id="modal-image"
+                 class="w-full h-full object-cover opacity-90"
+                 src="" alt=""/>
+            <div id="modal-image-fallback"
+                 class="absolute inset-0 flex items-center justify-center text-5xl text-amber-400/20">
+                <i class="fa-solid fa-bowl-food"></i>
+            </div>
+
+            <!-- Gradient overlay so title is readable -->
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent"></div>
+
+            <!-- Title + badges over image -->
+            <div class="absolute bottom-0 left-0 right-0 px-5 pb-4">
+                <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                    <span id="modal-match-score" class="text-xs font-bold px-2 py-0.5 rounded-full"></span>
+                    <span id="modal-budget" class="hidden bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">Budget</span>
+                    <span id="modal-difficulty" class="bg-brand-green text-brand-yellow border border-brand-green text-xs font-medium px-2 py-0.5 rounded-full"></span>
+                </div>
+                <h2 id="modal-title" class="text-white font-bold text-xl leading-snug"></h2>
+            </div>
+
+
+            <!-- Close + Save buttons -->
+            <div class="absolute top-3 right-3 flex items-center gap-2">
+                <button id="modal-save-btn"
+                        class="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-amber-400/60 hover:text-amber-400 transition-colors cursor-pointer"
+                        title="Save recipe">
+                    <i class="fa-regular fa-bookmark text-sm"></i>
+                </button>
+                <button onclick="closeModal()"
+                        class="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scrollable body -->
+        <div class="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-6">
+
+            <!-- Description -->
+            <p id="modal-description" class="text-amber-100/70 text-sm leading-relaxed"></p>
+
+            <!-- Meta row -->
+            <div class="flex flex-wrap gap-4 text-sm text-amber-400/80 border-t border-b border-amber-400/10 py-4">
+                <span class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-clock text-amber-400/50"></i>
+                    <span class="text-amber-100/50 text-xs">Prep</span>
+                    <span id="modal-prep" class="font-medium text-white text-xs"></span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-fire-burner text-amber-400/50"></i>
+                    <span class="text-amber-100/50 text-xs">Cook</span>
+                    <span id="modal-cook" class="font-medium text-white text-xs"></span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-people-group text-amber-400/50"></i>
+                    <span class="text-amber-100/50 text-xs">Serves</span>
+                    <span id="modal-servings" class="font-medium text-white text-xs"></span>
+                </span>
+            </div>
+
+            <!-- Nutrients -->
+            <div id="modal-nutrients-section">
+                <h3 class="text-amber-400 text-sm font-semibold mb-3">Nutrition per serving</h3>
+                <div id="modal-nutrients-grid" class="grid grid-cols-4 gap-2"></div>
+            </div>
+
+            <!-- Ingredients -->
+            <div>
+                <h3 class="text-amber-400 text-sm font-semibold mb-3">Ingredients</h3>
+                <ul id="modal-ingredients-list" class="flex flex-col gap-1.5"></ul>
+            </div>
+
+            <!-- Steps -->
+            <div>
+                <h3 class="text-amber-400 text-sm font-semibold mb-3">Method</h3>
+                <ol id="modal-steps-list" class="flex flex-col gap-4"></ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Tailwind safelist for dynamically applied classes -->
+<div class="hidden bg-green-400 bg-amber-400 bg-white/20 text-white text-green-900"></div>
+
 <script th:inline="javascript">
     const isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
 </script>
