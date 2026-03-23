@@ -20,7 +20,7 @@ public class User {
     @Column(name="display_name", unique = true, nullable = true) // unique set to true, like a twitter @
     private String displayName;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Recipe> recipes;
 
     public User(String email, String displayName) {
