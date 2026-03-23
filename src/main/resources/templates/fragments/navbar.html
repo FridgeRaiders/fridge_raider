@@ -8,16 +8,16 @@
 </head>
 <body>
 <nav th:fragment="navbar" class="bg-green-900 shadow-md px-6 py-2" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="max-w-7xl mx-auto flex items-center justify-between h-16">
+    <div class="max-w-7xl mx-auto grid grid-cols-3 items-center h-16 gap-0">
 
-        <!-- Logo -->
+        <!-- Left — Logo -->
         <a href="/" class="flex items-center gap-3 shrink-0">
             <img th:src="@{/images/fridge_raider_logo_only.png}" alt="Fridge Raider" class="h-12 w-12 rounded-full object-cover">
             <span class="font-bold text-xl tracking-wide uppercase text-amber-400">Fridge Raider</span>
         </a>
 
-        <!-- Desktop Nav Links -->
-        <div class="flex items-center gap-6">
+        <!-- Center — Nav links -->
+        <div class="flex items-center justify-center gap-6">
             <a href="/" class="text-amber-400 hover:text-white transition-colors text-sm font-medium">
                 <i class="fa-solid fa-house mr-1"></i> Home
             </a>
@@ -32,15 +32,16 @@
             </a>
         </div>
 
-        <!-- Desktop Auth Buttons -->
-        <div class="hidden md:flex items-center gap-4">
-            <a sec:authorize="isAuthenticated()" href="/logout" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium navbar-actions">
+        <!-- Right — Auth -->
+        <div class="flex items-center justify-end gap-4">
+            <a sec:authorize="isAuthenticated()" href="/logout" class="text-amber-400 hover:text-red-400 transition-colors text-sm font-medium">
                 <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
             </a>
             <a sec:authorize="!isAuthenticated()" href="/oauth2/authorization/okta" class="bg-amber-400 hover:brightness-110 text-green-900 text-sm font-bold px-4 py-2 rounded-lg transition-all">
                 Login
             </a>
         </div>
+
     </div>
 </nav>
 </body>
