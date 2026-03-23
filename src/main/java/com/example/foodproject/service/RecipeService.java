@@ -1,6 +1,7 @@
 package com.example.foodproject.service;
 
 import com.example.foodproject.dto.RecipeDTO;
+import com.example.foodproject.model.Recipe;
 import com.example.foodproject.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,4 +42,11 @@ public class RecipeService {
                 ))
                 .collect(Collectors.toList());
     }
+    // needed for SavedController.java
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Recipe not found with ID: " + id));
+    }
+
+
 }
