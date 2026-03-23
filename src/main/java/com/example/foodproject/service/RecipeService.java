@@ -1,6 +1,7 @@
 package com.example.foodproject.service;
 
 import com.example.foodproject.dto.RecipeDTO;
+import com.example.foodproject.model.Recipe;
 import com.example.foodproject.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,5 +77,31 @@ public class RecipeService {
         } catch (Exception e) {
             return 0;
         }
+    }
+    // needed for SavedController.java
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Recipe not found with ID: " + id));
+    }
+
+    public List<RecipeDTO> getFeedRecipes(int offset, int limit) {
+        return recipeRepository.findRandom(limit, offset)
+                .stream()
+                .map(recipe -> new RecipeDTO(
+                        recipe.getId(),
+                        recipe.getName(),
+                        recipe.getDescription(),
+                        recipe.getImageLink(),
+                        recipe.getIngredients(),
+                        recipe.getNutrients(),
+                        recipe.getSteps(),
+                        recipe.getServings(),
+                        recipe.getPrepTime(),
+                        recipe.getCookTime(),
+                        recipe.getIsBudget(),
+                        recipe.getDifficulty(),
+                        0
+                ))
+                .collect(Collectors.toList());
     }
 }
