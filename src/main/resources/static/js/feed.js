@@ -3,7 +3,7 @@ const PAGE_SIZE = 20;
 
 // Fetch a batch of recipes and append cards to the feed
 function loadRecipes() {
-    fetch(`/feed/recipes?offset=${currentOffset}&limit=${PAGE_SIZE}`)
+    return fetch(`/feed/recipes?offset=${currentOffset}&limit=${PAGE_SIZE}`)
         .then(res => res.json())
         .then(recipes => {
             document.getElementById('feed-loading').classList.add('hidden');
@@ -16,14 +16,19 @@ function loadRecipes() {
 
             // Fetch saved IDs once, then render all cards in this batch
             const savedIdsPromise = isAuthenticated
-                ? fetch('/saved/ids').then(res => res.json()).catch(() => [])
+                ? fetch('/saved/ids')
+                    .then(res => {
+                        if (!res.ok) return [];
+                        return res.json();
+                    })
+                    .then(data => Array.isArray(data) ? data : [])
+                    .catch(() => [])
                 : Promise.resolve([]);
 
             savedIdsPromise.then(function (savedIds) {
                 recipes.forEach(recipe => appendFeedCard(recipe, savedIds));
                 currentOffset += recipes.length;
 
-                // Show load more button if we got a full page
                 const loadMoreBtn = document.getElementById('load-more-btn');
                 if (recipes.length === PAGE_SIZE) {
                     loadMoreBtn.classList.remove('hidden');
@@ -74,10 +79,8 @@ function appendFeedCard(recipe, savedIds) {
 
     const saveBtn = card.querySelector('.feed-save-btn');
 
-    // Set initial saved state
     setSaveBtnState(saveBtn, savedIds.includes(recipe.id));
 
-    // Save button click
     saveBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         fetch(`/recipes/${recipe.id}/toggle-save`, { method: 'POST' })
@@ -92,7 +95,6 @@ function appendFeedCard(recipe, savedIds) {
             .catch(err => console.error('Save failed:', err));
     });
 
-    // Card click opens modal
     card.addEventListener('click', function () {
         openModal(recipe);
     });
