@@ -4,11 +4,11 @@ import com.example.foodproject.dto.RecipeDTO;
 import com.example.foodproject.model.Recipe;
 import com.example.foodproject.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,11 +26,14 @@ public class RecipeService {
             return Collections.emptyList();
         }
 
+        Set<String> seenNames = new java.util.HashSet<>();
+
         return ingredients.stream()
                 .flatMap(ingredient ->
                         recipeRepository.findByIngredientsContaining(ingredient).stream()
                 )
                 .distinct()
+                .filter(recipe -> seenNames.add(recipe.getName()))
                 .map(recipe -> {
                     int score = calculateMatchScore(recipe.getIngredients(), ingredients);
                     return new RecipeDTO(
@@ -49,35 +52,28 @@ public class RecipeService {
                             score
                     );
                 })
-                // Sort by match score descending — highest match appears first
                 .sorted((a, b) -> Integer.compare(b.matchScore(), a.matchScore()))
                 .collect(Collectors.toList());
     }
-
     // Count how many selected ingredients appear in the recipe text
     private int calculateMatchScore(String recipeIngredients, List<String> selectedIngredients) {
         if (recipeIngredients == null || recipeIngredients.isBlank()) return 0;
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<String> ingredientList = mapper.readValue(
-                    recipeIngredients,
-                    mapper.getTypeFactory().constructCollectionType(List.class, String.class)
-            );
+        List<String> ingredientList = Arrays.stream(recipeIngredients.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
 
-            long matches = ingredientList.stream()
-                    .filter(recipeIngredient ->
-                            selectedIngredients.stream()
-                                    .anyMatch(selected -> recipeIngredient.toLowerCase().contains(selected.toLowerCase()))
-                    )
-                    .count();
+        long matches = ingredientList.stream()
+                .filter(recipeIngredient ->
+                        selectedIngredients.stream()
+                                .anyMatch(selected -> recipeIngredient.toLowerCase().contains(selected.toLowerCase()))
+                )
+                .count();
 
-            return (int) Math.round((matches * 100.0) / ingredientList.size());
-
-        } catch (Exception e) {
-            return 0;
-        }
+        if (ingredientList.isEmpty()) return 0;
+        return (int) Math.round((matches * 100.0) / ingredientList.size());
     }
+
     // needed for SavedController.java
     public Recipe getRecipeById(Long id) {
         return recipeRepository.findById(id)

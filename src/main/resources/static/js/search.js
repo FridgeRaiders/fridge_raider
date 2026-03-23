@@ -366,18 +366,16 @@ function fetchRecipes() {
         return;
     }
 
-    const names = selectedIngredients.map(function (i) {
-        return encodeURIComponent(i.name);
-    }).join(',');
+    const names = selectedIngredients.map(i => i.name).join(',');
 
-    fetch('/recipes/search?ingredients=' + names)
+    fetch('/recipes/search?ingredients=' + encodeURIComponent(names))
         .then(function (response) {
             if (!response.ok) throw new Error('Recipe search failed');
             return response.json();
         })
         .then(function (recipes) {
-            allRecipes = recipes;   // cache full results
-            applyFilters();         // render through filters
+            allRecipes = recipes;
+            applyFilters();
         })
         .catch(function (error) {
             console.error('Recipe fetch error:', error);
@@ -402,7 +400,6 @@ function renderPagination() {
     const nextBtn    = document.getElementById('page-next');
     const numbersEl  = document.getElementById('page-numbers');
 
-    // Hide pagination entirely if everything fits on one page
     if (totalPages <= 1) {
         nav.classList.add('hidden');
         return;
@@ -410,7 +407,6 @@ function renderPagination() {
 
     nav.classList.remove('hidden');
 
-    // Prev button
     prevBtn.disabled = currentPage === 1;
     prevBtn.onclick = () => {
         if (currentPage > 1) {
@@ -420,7 +416,6 @@ function renderPagination() {
         }
     };
 
-    // Next button
     nextBtn.disabled = currentPage === totalPages;
     nextBtn.onclick = () => {
         if (currentPage < totalPages) {
@@ -430,7 +425,6 @@ function renderPagination() {
         }
     };
 
-    // Page number buttons
     numbersEl.innerHTML = '';
 
     const delta = 2;
@@ -475,6 +469,7 @@ function renderPagination() {
     }
 }
 
+
 // Render recipe cards into the results section
 function renderRecipes(recipes) {
     const container = document.getElementById('recipe-results');
@@ -487,10 +482,16 @@ function renderRecipes(recipes) {
 
     // Fetch all saved IDs in one request, then render cards
     const savedIdsPromise = isAuthenticated
-        ? fetch('/saved/ids').then(res => res.json()).catch(() => [])
+        ? fetch('/saved/ids')
+            .then(res => {
+                if (!res.ok) return [];
+                return res.json();
+            })
+            .then(data => Array.isArray(data) ? data : [])
+            .catch(() => [])
         : Promise.resolve([]);
 
-    savedIdsPromise.then(function(savedIds) {
+    savedIdsPromise.then(function (savedIds) {
         const template = document.getElementById('recipe-card-template');
 
         recipes.forEach(function (recipe) {
@@ -520,12 +521,12 @@ function renderRecipes(recipes) {
             });
 
             // Name and description
-            cardEl.querySelector('.recipe-name').textContent = recipe.name        ?? '\u2014';
+            cardEl.querySelector('.recipe-name').textContent        = recipe.name        ?? '\u2014';
             cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '\u2014';
 
             // Meta
-            cardEl.querySelector('.recipe-prep-text').textContent = recipe.prepTime  ? recipe.prepTime  + ' mins' : '\u2014';
-            cardEl.querySelector('.recipe-cook-text').textContent = recipe.cookTime  ? recipe.cookTime  + ' mins' : '\u2014';
+            cardEl.querySelector('.recipe-prep-text').textContent       = recipe.prepTime  ? recipe.prepTime  + ' mins' : '\u2014';
+            cardEl.querySelector('.recipe-cook-text').textContent       = recipe.cookTime  ? recipe.cookTime  + ' mins' : '\u2014';
             cardEl.querySelector('.recipe-servings-text').textContent   = recipe.servings  ? recipe.servings  + ' servings' : '\u2014';
             cardEl.querySelector('.recipe-difficulty-text').textContent = getDifficultyLabel(recipe.difficulty);
 
@@ -557,6 +558,7 @@ function renderRecipes(recipes) {
         });
     });
 }
+
 
 // Clear the results section and hide pagination
 function clearRecipes() {
