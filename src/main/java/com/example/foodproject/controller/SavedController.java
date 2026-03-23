@@ -86,6 +86,32 @@ public class SavedController {
         return savedService.getSavedRecipeIds(user);
     }
 
+    // Toggle save/unsave — returns JSON for JS fetch calls
+    @PostMapping("/recipes/{id}/toggle-save")
+    @ResponseBody
+    public java.util.Map<String, Object> toggleSave(@PathVariable Long id,
+                                                    @AuthenticationPrincipal OidcUser oidcUser) {
+        Recipe recipe = recipeService.getRecipeById(id);
+        User user = getCurrentUser(oidcUser);
+        boolean isSaved = savedService.isRecipeSaved(user, recipe);
+        if (isSaved) {
+            savedService.removeSavedRecipe(user, recipe);
+        } else {
+            savedService.saveRecipe(user, recipe);
+        }
+        return java.util.Map.of("saved", !isSaved);
+    }
+
+    // Check if a recipe is saved — returns JSON for JS fetch calls
+    @GetMapping("/recipes/{id}/saved")
+    @ResponseBody
+    public java.util.Map<String, Object> isSaved(@PathVariable Long id,
+                                                 @AuthenticationPrincipal OidcUser oidcUser) {
+        Recipe recipe = recipeService.getRecipeById(id);
+        User user = getCurrentUser(oidcUser);
+        return java.util.Map.of("saved", savedService.isRecipeSaved(user, recipe));
+    }
+
     // method to find current user
     private User getCurrentUser(OidcUser oidcUser) {
         // get email

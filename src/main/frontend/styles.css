@@ -26,3 +26,7 @@
 .border-brand-green {
     border-color: rgba(74, 222, 128, 0.3);
 }
+
+/*#modal-match-score-feed {
+display: none !important;
+}
