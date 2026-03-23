@@ -17,5 +17,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findByIngredientsContaining(@Param("ingredient") String ingredient);
     List<Recipe> getRecipesByUser_DisplayName(String displayName);
     List<Recipe> getRecipesByUser_Id(Long userId);
-
+    @Query(value = "SELECT * FROM recipes ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
+    List<Recipe> findRandom(@Param("limit") int limit);
 }
