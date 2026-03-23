@@ -114,12 +114,14 @@ public class SavedController {
 
     // method to find current user
     private User getCurrentUser(OidcUser oidcUser) {
-        // get email
         String email = oidcUser.getEmail();
-        // look up user in database
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() ->
-                        new IllegalStateException("No user found for: " + email));
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setDisplayName(email);
+                    return userRepository.save(newUser);
+                });
     }
 
 }

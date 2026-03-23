@@ -105,10 +105,15 @@ function openModal(recipe) {
 
     try {
         const nutrients = typeof recipe.nutrients === 'string'
-            ? JSON.parse(recipe.nutrients)
-            : recipe.nutrients;
+            ? Object.fromEntries(
+                recipe.nutrients.split(',')
+                    .map(s => s.trim())
+                    .filter(Boolean)
+                    .map(entry => entry.split(':'))
+              )
+            : recipe.nutrients ?? {};
 
-        const entries = Object.entries(nutrients ?? {}).filter(([, v]) => v && v !== '0g' && v !== '0');
+        const entries = Object.entries(nutrients).filter(([, v]) => v && v !== '0g' && v !== '0');
 
         if (entries.length > 0) {
             nutrientsSection.classList.remove('hidden');
@@ -134,10 +139,10 @@ function openModal(recipe) {
 
     try {
         const ingredients = typeof recipe.ingredients === 'string'
-            ? JSON.parse(recipe.ingredients)
-            : recipe.ingredients;
+            ? recipe.ingredients.split(',').map(s => s.trim()).filter(Boolean)
+            : recipe.ingredients ?? [];
 
-        (ingredients ?? []).forEach(function (ingredient) {
+        ingredients.forEach(function (ingredient) {
             const li = document.createElement('li');
             li.className = 'flex items-start gap-2 text-sm text-amber-100/70';
             li.innerHTML = `<i class="fa-solid fa-circle text-amber-400/40 text-[6px] mt-1.5 shrink-0"></i><span>${ingredient}</span>`;
@@ -153,10 +158,10 @@ function openModal(recipe) {
 
     try {
         const steps = typeof recipe.steps === 'string'
-            ? JSON.parse(recipe.steps)
-            : recipe.steps;
+            ? recipe.steps.split(',').map(s => s.trim()).filter(Boolean)
+            : recipe.steps ?? [];
 
-        (steps ?? []).forEach(function (step, index) {
+        steps.forEach(function (step, index) {
             const li = document.createElement('li');
             li.className = 'flex items-start gap-3 text-sm text-amber-100/70';
             li.innerHTML = `
