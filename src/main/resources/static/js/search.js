@@ -520,12 +520,12 @@ function renderRecipes(recipes) {
             });
 
             // Name and description
-            cardEl.querySelector('.recipe-name').textContent        = recipe.name        ?? '\u2014';
+            cardEl.querySelector('.recipe-name').textContent = recipe.name        ?? '\u2014';
             cardEl.querySelector('.recipe-description').textContent = recipe.description ?? '\u2014';
 
             // Meta
-            cardEl.querySelector('.recipe-prep-text').textContent       = recipe.prepTime  ? recipe.prepTime  + ' mins' : '\u2014';
-            cardEl.querySelector('.recipe-cook-text').textContent       = recipe.cookTime  ? recipe.cookTime  + ' mins' : '\u2014';
+            cardEl.querySelector('.recipe-prep-text').textContent = recipe.prepTime  ? recipe.prepTime  + ' mins' : '\u2014';
+            cardEl.querySelector('.recipe-cook-text').textContent = recipe.cookTime  ? recipe.cookTime  + ' mins' : '\u2014';
             cardEl.querySelector('.recipe-servings-text').textContent   = recipe.servings  ? recipe.servings  + ' servings' : '\u2014';
             cardEl.querySelector('.recipe-difficulty-text').textContent = getDifficultyLabel(recipe.difficulty);
 
