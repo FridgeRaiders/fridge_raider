@@ -59,7 +59,7 @@ public class RecipeService {
     private int calculateMatchScore(String recipeIngredients, List<String> selectedIngredients) {
         if (recipeIngredients == null || recipeIngredients.isBlank()) return 0;
 
-        List<String> ingredientList = Arrays.stream(recipeIngredients.split(","))
+        List<String> ingredientList = Arrays.stream(recipeIngredients.split("\\|"))
                 .map(String::trim)
                 .collect(Collectors.toList());
 
