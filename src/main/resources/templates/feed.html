@@ -12,7 +12,7 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <main class="flex-1 flex justify-center px-4 py-8">
-    <div class="w-full max-w-xl flex flex-col gap-6">
+    <div class="w-full max-w-5xl flex flex-col gap-6">
 
         <!-- Page header -->
         <div class="flex flex-col gap-1 pb-2 border-b border-amber-400/10">
@@ -21,8 +21,8 @@
         </div>
 
         <!-- Cards injected here by feed.js -->
-        <div id="feed-container" class="flex flex-col gap-6">
-            <p id="feed-loading" class="text-amber-100/40 text-sm text-center py-10">
+        <div id="feed-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <p id="feed-loading" class="col-span-2 text-amber-100/40 text-sm text-center py-10">
                 <i class="fa-solid fa-spinner animate-spin mr-2"></i>Loading recipes...
             </p>
         </div>
@@ -107,8 +107,8 @@
         </div>
     </div>
 </div>
-<div th:replace="~{fragments/footer :: footer}"></div>
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 <!-- Tailwind safelist for dynamically applied classes -->
 <div class="hidden bg-green-400 bg-amber-400 bg-white/20 text-white text-green-900"></div>
