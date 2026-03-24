@@ -1,16 +1,127 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head lang="en">
+<head>
     <meta charset="UTF-8"/>
     <title>Fridge Raider - Saved Recipes</title>
     <script src="https://kit.fontawesome.com/850f048d48.js" crossorigin="anonymous"></script>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link th:href="@{/main.css}" rel="stylesheet"/>
 </head>
-<body>
+<body class="bg-gray-900 min-h-screen flex flex-col">
+
 <div th:replace="fragments/navbar :: navbar"></div>
-<h1>Saved Recipes</h1>
+
+<main class="flex-1 flex justify-center px-4 py-8">
+    <div class="w-full max-w-5xl flex flex-col gap-6">
+
+        <!-- Page header -->
+        <div class="flex flex-col gap-1 pb-2 border-b border-amber-400/10">
+            <h1 class="text-white font-bold text-xl">Saved Recipes</h1>
+            <p class="text-amber-100/40 text-sm">
+                Recipes you have saved for later!
+            </p>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(savedRecipes)}"
+             class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="text-5xl mb-4">
+                <i class="fa-regular fa-bookmark text-amber-400/30"></i>
+            </div>
+            <p class="text-amber-400 font-semibold text-lg">No saved recipes yet</p>
+            <p class="text-amber-100/40 text-sm mt-2 max-w-sm">
+                Save recipes from the home page or feed and they will appear here.
+            </p>
+        </div>
+
+        <!-- Saved recipe cards -->
+        <div th:if="${!#lists.isEmpty(savedRecipes)}"
+             class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+            <div th:each="saved : ${savedRecipes}"
+                 class="group flex flex-col rounded-2xl bg-green-950 border border-amber-400/10 overflow-hidden hover:border-amber-400/40 hover:shadow-lg hover:shadow-black/30 transition-all duration-300">
+
+                <!-- Image area -->
+                <div class="relative h-56 bg-green-900/60 overflow-hidden">
+                    <img th:if="${saved.recipe.imageLink != null and !#strings.isEmpty(saved.recipe.imageLink)}"
+                         th:src="${saved.recipe.imageLink}"
+                         th:alt="${saved.recipe.name}"
+                         class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"/>
+
+                    <div th:if="${saved.recipe.imageLink == null or #strings.isEmpty(saved.recipe.imageLink)}"
+                         class="absolute inset-0 flex items-center justify-center text-4xl text-amber-400/20">
+                        <i class="fa-solid fa-bowl-food"></i>
+                    </div>
+
+                    <!-- Budget badge -->
+                    <span th:if="${saved.recipe.isBudget}"
+                          class="absolute top-3 right-3 bg-amber-400 text-green-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                        Budget
+                    </span>
+
+                    <!-- Unsave button -->
+                    <form th:action="@{/saved/{id}/unsave(id=${saved.recipe.id})}"
+                          method="post"
+                          class="absolute top-3 left-3">
+                        <button type="submit"
+                                class="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-amber-400 transition-colors cursor-pointer"
+                                title="Remove from saved">
+                            <i class="fa-solid fa-bookmark text-sm"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Card content -->
+                <div class="flex flex-col gap-3 p-5">
+                    <h2 class="text-white font-semibold text-base leading-snug"
+                        th:text="${saved.recipe.name}">
+                        Recipe name
+                    </h2>
+
+                    <p class="text-amber-100/50 text-sm leading-relaxed line-clamp-2"
+                       th:text="${saved.recipe.description}">
+                        Recipe description
+                    </p>
+
+                    <div class="border-t border-amber-400/10"></div>
+
+                    <div class="flex flex-wrap gap-3 text-xs text-amber-400/70">
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-clock"></i>
+                            <span th:text="${saved.recipe.prepTime != null ? saved.recipe.prepTime + ' mins prep' : '—'}">
+                                —
+                            </span>
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-fire-burner"></i>
+                            <span th:text="${saved.recipe.cookTime != null ? saved.recipe.cookTime + ' mins cook' : '—'}">
+                                —
+                            </span>
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-people-group"></i>
+                            <span th:text="${saved.recipe.servings != null ? saved.recipe.servings + ' servings' : '—'}">
+                                —
+                            </span>
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-gauge"></i>
+                            <span th:text="${saved.recipe.difficulty != null ? saved.recipe.difficulty : '—'}">
+                                —
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>
