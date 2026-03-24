@@ -36,35 +36,52 @@
                 <span><strong>0</strong> following</span>
             </div>
         </div>
-    </div>
 
-    <!-- EDIT PROFILE -->
-    <div class="mt-8 max-w-md mx-auto bg-gray-900/70 p-6 rounded-xl border border-white/10 shadow-lg">
-        <h3 class="text-lg font-semibold mb-4 text-amber-400">Edit Profile</h3>
-
-        <form th:action="@{/profile/update}" method="post" class="flex flex-col gap-4">
-
-            <!-- Display Name Input -->
-            <div class="flex flex-col">
-                <label class="text-sm text-gray-400 mb-1">Change Your Username</label>
-                <input
-                        id="displayName-input"
-                        type="text"
-                        name="displayName"
-                        placeholder="Enter new username"
-                        autocomplete="off"
-                        class="block min-w-0 grow bg-transparent py-2.5 pr-3 pl-2 text-sm text-white placeholder:text-amber-100/40 focus:outline-none"
-                        style="-webkit-text-fill-color: white;"
-                        required />
-            </div>
-
-            <button
-                    type="submit"
-                    class="bg-amber-400 text-gray-900 font-semibold py-2 rounded-lg hover:bg-amber-300 transition-all active:scale-95">
-                Update
+        <!-- Edit Profile Button -->
+        <div class="mt-4 flex justify-center md:justify-start">
+            <button onclick="openModal()"
+                    class="bg-amber-400 text-gray-900 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-amber-300 transition active:scale-95">
+                Edit Profile
             </button>
-        </form>
+        </div>
     </div>
+    <!-- EDIT PROFILE MODAL -->
+    <div id="editProfileModal"
+         class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-50">
+
+        <div class="bg-gray-900 p-6 rounded-xl border border-white/10 shadow-lg w-full max-w-md relative">
+
+            <!-- Close Button -->
+            <button onclick="closeModal()"
+                    class="absolute top-3 right-3 text-gray-400 hover:text-white text-lg">
+                &times;
+            </button>
+
+            <h3 class="text-lg font-semibold mb-4 text-amber-400">Edit Profile</h3>
+
+            <form th:action="@{/profile/update}" method="post" class="flex flex-col gap-4">
+
+                <!-- Display Name Input -->
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-400 mb-1">Change Your Username</label>
+                    <input
+                            type="text"
+                            name="displayName"
+                            placeholder="Enter new username"
+                            autocomplete="off"
+                            class="bg-transparent py-2.5 px-2 text-sm text-white placeholder:text-amber-100/40 focus:outline-none border border-white/10 rounded-md"
+                            required />
+                </div>
+
+                <button
+                        type="submit"
+                        class="bg-amber-400 text-gray-900 font-semibold py-2 rounded-lg hover:bg-amber-300 transition-all active:scale-95">
+                    Update
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
     <!-- RECIPES GRID -->
     <div class="mt-10">
@@ -78,8 +95,10 @@
         </div>
     </div>
 
-</div>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/profile.js}"></script>
+
 </body>
+
 </html>
