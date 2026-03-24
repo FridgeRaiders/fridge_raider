@@ -61,6 +61,24 @@ public class SavedController {
         return "redirect:/recipes/" + id;
     }
 
+    // remove saved recipe from saved page
+    @PostMapping("/saved/{id}/unsave")
+    public String unsaveRecipeFromSavedPage(@PathVariable Long id,
+                                            @AuthenticationPrincipal OidcUser oidcUser) {
+
+        // Find the recipe being removed from saved recipes
+        Recipe recipe = recipeService.getRecipeById(id);
+
+        // Find the logged-in user
+        User user = getCurrentUser(oidcUser);
+
+        // Remove the saved recipe
+        savedService.removeSavedRecipe(user, recipe);
+
+        // Redirect back to the saved recipes page
+        return "redirect:/saved";
+    }
+
     // show all saved recipes
     @GetMapping("/saved")
     public String viewSavedRecipes(@AuthenticationPrincipal OidcUser oidcUser,
