@@ -139,7 +139,7 @@ function openModal(recipe) {
 
     try {
         const ingredients = typeof recipe.ingredients === 'string'
-            ? recipe.ingredients.split(',').map(s => s.trim()).filter(Boolean)
+            ? recipe.ingredients.split('|').map(s => s.trim()).filter(Boolean)
             : recipe.ingredients ?? [];
 
         ingredients.forEach(function (ingredient) {
@@ -158,7 +158,7 @@ function openModal(recipe) {
 
     try {
         const steps = typeof recipe.steps === 'string'
-            ? recipe.steps.split(',').map(s => s.trim()).filter(Boolean)
+            ? recipe.steps.split('.').map(s => s.trim()).filter(Boolean)
             : recipe.steps ?? [];
 
         steps.forEach(function (step, index) {
