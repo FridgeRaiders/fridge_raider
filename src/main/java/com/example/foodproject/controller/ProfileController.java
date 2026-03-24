@@ -41,7 +41,19 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public ModelAndView profilePage() {
-        return new ModelAndView("/profile");
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+
+        User user = userRepository.findUserByEmail(email).orElseThrow();
+
+        ModelAndView myProfile = new ModelAndView("profile");
+        myProfile.addObject("user", user);
+
+        return myProfile;
     }
 
     @GetMapping("/profile/{displayName}") // getting user by display name, need to create html file
@@ -51,13 +63,21 @@ public class ProfileController {
         return userRepository.findUserByDisplayName(displayName);
     }
 
-    @PutMapping("/profile/{id}") // setting display name MUST KEEP FUNDAMENTAL LOGIC, NOT RETURN TYPE. Probably set return to a redirect of the user.
-    @ResponseBody
-    public Optional<User> updateUserName(@PathVariable Long id, @RequestBody User newUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setDisplayName(newUser.getDisplayName());
-                    return userRepository.save(user);
+    @PostMapping("/profile/update")
+    public RedirectView updateUserName(@RequestParam String displayName) {
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+
+        userRepository.findUserByEmail(email)
+                .ifPresent(user -> {
+                    user.setDisplayName(displayName);
+                    userRepository.save(user);
                 });
+
+        return new RedirectView("/profile");
     }
 }
