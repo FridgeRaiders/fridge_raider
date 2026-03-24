@@ -10,7 +10,7 @@ function getScoreClasses(score) {
     } else if (score >= 40) {
         return ['bg-amber-400', 'text-green-900'];
     } else {
-        return ['bg-red-500/20', 'text-white'];
+      return ['alert-red'];
     }
 }
 

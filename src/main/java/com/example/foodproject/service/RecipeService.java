@@ -25,21 +25,29 @@ public class RecipeService {
             return Collections.emptyList();
         }
 
-        // Normalise all ingredients once up front
-        List<String> normalisedIngredients = ingredients.stream()
-                .map(this::normaliseTerm)
-                .collect(Collectors.toList());
-
         Set<String> seenNames = new java.util.HashSet<>();
 
-        return normalisedIngredients.stream()
-                .flatMap(ingredient ->
-                        recipeRepository.findByIngredientsContaining(ingredient).stream()
-                )
+        return ingredients.stream()
+                .flatMap(ingredient -> {
+                    String original = ingredient.trim().toLowerCase();
+                    String plural = normaliseTerm(original);
+
+                    // Try plural first
+                    List<Recipe> results = new java.util.ArrayList<>(
+                            recipeRepository.findByIngredientsContaining(plural)
+                    );
+
+                    // Only fall back to original if plural found nothing
+                    if (results.isEmpty()) {
+                        results.addAll(recipeRepository.findByIngredientsContaining(original));
+                    }
+
+                    return results.stream();
+                })
                 .distinct()
                 .filter(recipe -> seenNames.add(recipe.getName()))
                 .map(recipe -> {
-                    int score = calculateMatchScore(recipe.getIngredients(), normalisedIngredients);
+                    int score = calculateMatchScore(recipe.getIngredients(), ingredients);
                     return new RecipeDTO(
                             recipe.getId(),
                             recipe.getName(),
@@ -66,9 +74,9 @@ public class RecipeService {
         String[] words = term.split("\\s+");
 
         if (words.length == 1 && !term.endsWith("s")) {
-            if (term.endsWith("ey")) return term + "s";   // honey → honeys
-            if (term.endsWith("y"))  return term.substring(0, term.length() - 1) + "ies"; // berry → berries
-            return term + "s";                             // pea → peas, almond → almonds
+            if (term.endsWith("ey")) return term + "s";   // honey = honeys
+            if (term.endsWith("y"))  return term.substring(0, term.length() - 1) + "ies"; // berry = berries
+            return term + "s";                             // pea = peas, almond → almonds
         }
         return term;
     }
