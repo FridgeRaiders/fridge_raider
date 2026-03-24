@@ -1146,6 +1146,7 @@ video {
 .bg-amber-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(251 191 36 / var(--tw-bg-opacity, 1));
+  margin-top: auto;
 }
 
 .bg-amber-400\/15 {
