@@ -26,3 +26,8 @@
 .border-brand-green {
     border-color: rgba(74, 222, 128, 0.3);
 }
+
+.alert-red {
+    background-color: rgba(185, 28, 28, 0.7);
+    color: black !important;
+}

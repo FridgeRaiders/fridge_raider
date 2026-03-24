@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    @Query("SELECT r FROM Recipe r WHERE " +
-            "LOWER(r.ingredients) LIKE LOWER(CONCAT('%', :ingredient, '%'))")
+    @Query(value = "SELECT * FROM recipes WHERE " +
+            "LOWER(ingredients) ~ LOWER(CONCAT('(^|[^a-z])', :ingredient, '([^a-z]|$)'))",
+            nativeQuery = true)
     List<Recipe> findByIngredientsContaining(@Param("ingredient") String ingredient);
     List<Recipe> getRecipesByUser_DisplayName(String displayName);
     List<Recipe> getRecipesByUser_Id(Long userId);

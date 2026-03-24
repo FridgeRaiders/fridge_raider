@@ -328,7 +328,6 @@ document.addEventListener('click', function (event) {
     }
 });
 
-
 // Close the filter popover when clicking outside it
 document.addEventListener('click', function (event) {
     if (!filtersOpen) return;
@@ -339,7 +338,6 @@ document.addEventListener('click', function (event) {
         popover.classList.add('hidden');
     }
 });
-
 
 // Show/hide the placeholder and results section based on selected ingredients
 function updateResultsVisibility() {
@@ -354,7 +352,6 @@ function updateResultsVisibility() {
         resultsSection.classList.remove('hidden');
     }
 }
-
 
 // Build a comma-separated string of ingredient names and fetch matching recipes
 function fetchRecipes() {
